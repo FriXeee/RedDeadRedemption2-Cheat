@@ -3,7 +3,7 @@
 
 void Cheat::LogFunctions::Init()
 {
-	std::cout << Cheat::CheatFunctions::ReturnDateAndTimeAsString() << xorstr_(" [Init] ") << xorstr_("Initializing RDR2 Cheat") << xorstr_(" | Provided to you by HeyThereMate#8896") << std::endl;
+	std::cout << Cheat::CheatFunctions::ReturnDateAndTimeAsString() << xorstr_(" [Init] ") << xorstr_("Initializing RDR2 Cheat") << xorstr_(" | Github Repository: https://github.com/HowYouDoinMate/RedDeadRedemption2-Cheat") << std::endl;
 }
 
 void Cheat::LogFunctions::Message(char* Message)

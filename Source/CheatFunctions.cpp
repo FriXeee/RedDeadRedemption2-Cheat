@@ -61,7 +61,14 @@ std::string Cheat::CheatFunctions::ReturnDateAndTimeAsString()
 void Cheat::CheatFunctions::CreateConsoleWindow()
 {
 	AllocConsole();			
-	SetConsoleTitleA(xorstr_("RDR2 Console"));
+	SetConsoleTitleA(xorstr_("RDR2 Cheat Console"));
+
+	// Set Console Dimensions so all text is properly visible
+	HWND ConsoleWindowHandle = GetConsoleWindow();
+	RECT CurrentRect;
+	GetWindowRect(ConsoleWindowHandle, &CurrentRect);
+	MoveWindow(ConsoleWindowHandle, CurrentRect.left, CurrentRect.top, 1100, 500, TRUE);
+	CloseHandle(ConsoleWindowHandle);
 
 	//Disable Close Button Off Console Window And Set Max Window Size
 	HWND hwnd = ::GetConsoleWindow();

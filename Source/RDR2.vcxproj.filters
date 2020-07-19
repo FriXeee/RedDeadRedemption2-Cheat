@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GameFunctions.cpp">
+      <Filter>Source Files\Game Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="CheatFunctions.cpp">
+      <Filter>Source Files\Cheat Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="GameHooking.cpp">
+      <Filter>Source Files\Game Hooking</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="LogFunctions.cpp">
+      <Filter>Source Files\Cheat Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameArrays.cpp">
+      <Filter>Source Files\Game Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Features.cpp">
+      <Filter>Source Files\Game Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="invoker.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="natives.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{d9a63d3d-9625-48e5-85ce-2b134a15e3a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{5a32accc-5182-4912-b81f-543713c12356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Functions">
+      <UniqueIdentifier>{7be94063-2ed5-4a9f-888e-41a1b05c6a1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Cheat Functions">
+      <UniqueIdentifier>{aee08d75-fd27-4ace-822b-440592efb6f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{68f5dd72-2532-4511-99f7-8d4c0207f28a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game Hooking">
+      <UniqueIdentifier>{92ed04f3-af73-4217-92d3-005ed299c9ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Game Hooking">
+      <UniqueIdentifier>{e692e31c-ed2e-48c1-8100-547e5ff37dc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GUI">
+      <UniqueIdentifier>{eea8255f-5620-4af3-9f58-6e8226ae5522}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

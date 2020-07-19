@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Functions">
+      <UniqueIdentifier>{068c3ab3-f6e6-4469-9d66-073e6fe12cac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameHooking">
+      <UniqueIdentifier>{1db7f2b3-a8b0-473e-a07a-07815abfaba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameHooking\Invoker">
+      <UniqueIdentifier>{5c82eb5e-2258-4fde-ab11-4df0327ad318}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Functions\GUI">
+      <UniqueIdentifier>{c495016f-3715-4863-8c09-3d873c8dc712}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="invoker.hpp">
+      <Filter>Source Files\GameHooking\Invoker</Filter>
+    </ClInclude>
+    <ClInclude Include="natives.hpp">
+      <Filter>Source Files\GameHooking\Invoker</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Source Files\Functions\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls.h">
+      <Filter>Source Files\Functions\GUI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CheatFunctions.cpp">
+      <Filter>Source Files\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="GameFunctions.cpp">
+      <Filter>Source Files\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="LogFunctions.cpp">
+      <Filter>Source Files\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="GameHooking.cpp">
+      <Filter>Source Files\GameHooking</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Source Files\Functions\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Controls.cpp">
+      <Filter>Source Files\Functions\GUI</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

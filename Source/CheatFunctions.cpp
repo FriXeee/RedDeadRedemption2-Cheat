@@ -67,7 +67,7 @@ void Cheat::CheatFunctions::CreateConsoleWindow()
 	HWND ConsoleWindowHandle = GetConsoleWindow();
 	RECT CurrentRect;
 	GetWindowRect(ConsoleWindowHandle, &CurrentRect);
-	MoveWindow(ConsoleWindowHandle, CurrentRect.left, CurrentRect.top, 1100, 500, TRUE);
+	MoveWindow(ConsoleWindowHandle, CurrentRect.left, CurrentRect.top, 1200, 500, TRUE);
 	CloseHandle(ConsoleWindowHandle);
 
 	//Disable Close Button Off Console Window And Set Max Window Size

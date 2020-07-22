@@ -25,7 +25,9 @@
     <ClCompile Include="Features.cpp">
       <Filter>Source Files\Game Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

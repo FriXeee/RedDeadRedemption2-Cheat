@@ -1,7 +1,5 @@
 #pragma once
 
-// Generated Wed, 20 Nov 2019 13:52:37 GMT
-
 namespace BUILTIN
 {
 	static void WAIT(int ms) { invoke<Void>(0x4EDE34FBADD967A6, ms); } // 0x4EDE34FBADD967A6 b1207

@@ -124,7 +124,6 @@ namespace Cheat
 	}
 	namespace GameFunctions 
 	{
-		void SpawnVehicleCustomInput();
 		void GiveAllWeapons(Ped Player);
 		void TPto(Vector3 Coords);
 		void GUILoop();

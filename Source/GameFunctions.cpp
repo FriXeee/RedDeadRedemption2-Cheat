@@ -17,37 +17,6 @@ void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* d
 }
 
 
-void Cheat::GameFunctions::SpawnVehicleCustomInput()
-{
-	MISC::DISPLAY_ONSCREEN_KEYBOARD(true, xorstr_("Enter Vehicle Name"), "", "", "", "", "", 16);
-	while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) BUILTIN::WAIT(0);
-	const char* SpawnVehicle = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
-
-	if (!MISC::GET_ONSCREEN_KEYBOARD_RESULT()) {
-		return;
-	}
-
-	Hash model = MISC::GET_HASH_KEY(SpawnVehicle);
-	if (!STREAMING::IS_MODEL_IN_CDIMAGE(model) || !STREAMING::IS_MODEL_A_VEHICLE(model))
-	{
-		MessageBoxA(NULL, xorstr_("Invalid vehicle model"), xorstr_("Error"), MB_OK);
-		return;
-	}
-
-
-	STREAMING::REQUEST_MODEL(MISC::GET_HASH_KEY(SpawnVehicle), false);
-	while (!STREAMING::HAS_MODEL_LOADED(MISC::GET_HASH_KEY(SpawnVehicle))) BUILTIN::WAIT(0);
-	Vector3 pos = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 0.0, 5.0, 0);
-	Vehicle veh = VEHICLE::CREATE_VEHICLE(MISC::GET_HASH_KEY(SpawnVehicle), pos.x, pos.y, pos.z, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()), 1, 1, NULL, NULL);
-	if (veh != 0)
-	{
-		VEHICLE::SET_VEHICLE_IS_STOLEN(veh, false);
-		ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, 1, 1);
-		NETWORK::NETWORK_REGISTER_ENTITY_AS_NETWORKED(veh);
-		NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_VEH(veh), true);
-	}
-}
-
 void Cheat::GameFunctions::GiveAllWeapons(Ped Player)
 {
 	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_LANTERN_ELECTRIC")), 9999, true, true, false, 0.0);
@@ -154,7 +123,6 @@ void Cheat::GameFunctions::PrintSubtitle(const char* Text)
 }
 
 
-
 void Cheat::GameFunctions::TeleportToWaypoint()
 {
 	if (!MAP::IS_WAYPOINT_ACTIVE()) { Cheat::GameFunctions::PrintSubtitle(xorstr_("~COLOR_RED~No waypoint has been set")); return; }
@@ -170,7 +138,6 @@ void Cheat::GameFunctions::TeleportToWaypoint()
 		e = PED::GET_MOUNT(e);
 	}
 
-	// load needed map region and check height levels for ground existence
 	bool groundFound = false;
 	static float groundCheckHeight[] =
 	{ 100.0, 150.0, 50.0, 0.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0, 1050.0 };
@@ -185,9 +152,8 @@ void Cheat::GameFunctions::TeleportToWaypoint()
 			break;
 		}
 	}
-	// if ground not found then set Z in air
+
 	if (!groundFound) { coords.z = 1000.0; }
-	//do it
 
 	Cheat::GameFunctions::TPto(coords);
 }

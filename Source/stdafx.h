@@ -67,6 +67,8 @@ namespace Cheat
 		bool isWhitespace(std::string s);
 		std::string GetLastErrorAsString();
 		void PostInitCheat();
+		std::string VirtualKeyCodeToString(UCHAR virtualKey);
+		bool ReturnPressedKey(int& PressedKey);
 	}
 	namespace CheatFeatures
 	{
@@ -180,6 +182,7 @@ namespace Cheat
 	}
 	namespace Controls
 	{
+		extern int openKey;
 		extern int maxVisOptions;
 		extern void MoveMenu(SubMenus menu);
 		extern void CloseMenu();
@@ -210,6 +213,7 @@ namespace Cheat
 		extern bool BoolOption(const char* option, bool* isEnabled, const char* InformationText);
 		extern bool IntOption(const char* option, int* var, int min, int max, int step, const char* InformationText);
 		extern bool FloatOption(const char* option, float* var, float min, float max, float step, const char* InformationText);
+		extern void drawText(std::string text, float font_size, float x, float y, rgba rgba, bool centered);
 		extern float MenuXFloat;
 	}
 }

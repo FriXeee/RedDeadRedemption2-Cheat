@@ -6,6 +6,7 @@ bool Cheat::Controls::rightpress = false;
 bool Cheat::Controls::uppress = false;
 bool Cheat::Controls::downpress = false;
 
+int Cheat::Controls::openKey = VK_F5;
 int Cheat::Controls::previousOption = 0;
 int Cheat::Controls::optionCount;
 int Cheat::Controls::currentOption = 1;
@@ -52,7 +53,7 @@ void Cheat::Controls::CheckKeys() {
 	optionpress = false;
 
 	if (GetTickCount64() - Delay > 150) {
-		if (GetAsyncKeyState(VK_MULTIPLY) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || GetAsyncKeyState(VK_F4) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_CONTROL_PRESSED(0, INPUT_FRONTEND_RB)) {
+		if (GetAsyncKeyState(openKey) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_CONTROL_PRESSED(0, INPUT_FRONTEND_RB)) {
 			AUDIO::PLAY_SOUND_FRONTEND("SELECT", "HUD_SHOP_SOUNDSET", true, 0);	
 			if (Controls::menuLevel == 0)
 			{

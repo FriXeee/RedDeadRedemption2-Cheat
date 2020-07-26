@@ -1,38 +1,49 @@
 #include "stdafx.h"
 
-bool Cheat::Controls::isMenuEnabled = false;
 bool Cheat::Controls::optionpress = false;
 bool Cheat::Controls::leftpress = false;
 bool Cheat::Controls::rightpress = false;
 bool Cheat::Controls::uppress = false;
 bool Cheat::Controls::downpress = false;
-int Cheat::Controls::optioncount;
-int Cheat::Controls::currentoption = 1;
-int menulevel = 0;
+
+int Cheat::Controls::previousOption = 0;
+int Cheat::Controls::optionCount;
+int Cheat::Controls::currentOption = 1;
+int Cheat::Controls::menuLevel = 0;
+SubMenus Cheat::Controls::PreviousMenu = NOMENU;
+int Cheat::Controls::PreviousMenuLevel;
+int Cheat::Controls::optionsArray[1000];
+SubMenus Cheat::Controls::menusArray[1000];
+SubMenus Cheat::Controls::currentMenu;
 int Delay = GetTickCount();
 
-char* currentmenu[100];
-char* actualmenu = (char*)"mainmenu";
-int lastoption[100];
-
-void Cheat::Controls::changeMenu(const char* menuname) {
-	currentmenu[menulevel] = actualmenu;
-	lastoption[menulevel] = currentoption;
-	menulevel++;
-	actualmenu = (char*)menuname;
-	currentoption = 1;
+void Cheat::Controls::MoveMenu(SubMenus menu) 
+{
+	Controls::menusArray[Controls::menuLevel] = Controls::currentMenu;
+	Controls::optionsArray[Controls::menuLevel] = Controls::currentOption;
+	Controls::menuLevel++;
+	Controls::currentMenu = menu;
+	Controls::currentOption = 1;
 }
 
-bool Cheat::Controls::currentMenu(const char* menuname) {
-	if (menuname == actualmenu) return true;
-	else return false;
+void Cheat::Controls::BackMenu()
+{
+	Controls::PreviousMenu = Controls::currentMenu;
+	Controls::PreviousMenuLevel = Controls::menuLevel;
+	Controls::previousOption = Controls::currentOption;
+	Controls::menuLevel--;
+	Controls::currentMenu = Controls::menusArray[Controls::menuLevel];
+	Controls::currentOption = Controls::optionsArray[Controls::menuLevel];
 }
 
-void backMenu() {
-	if (Cheat::Controls::currentMenu("mainmenu")) { Cheat::Controls::isMenuEnabled = false; }
-	menulevel--;
-	actualmenu = currentmenu[menulevel];
-	Cheat::Controls::currentoption = lastoption[menulevel];
+void Cheat::Controls::CloseMenu()
+{
+	Controls::PreviousMenu = Cheat::Controls::currentMenu;
+	Controls::PreviousMenuLevel = Controls::menuLevel;
+	Controls::previousOption = Controls::currentOption;
+	Controls::menuLevel = 0;
+	Controls::currentMenu = Controls::menusArray[Controls::menuLevel];
+	Controls::currentOption = Controls::optionsArray[Controls::menuLevel];
 }
 
 void Cheat::Controls::CheckKeys() {
@@ -40,13 +51,20 @@ void Cheat::Controls::CheckKeys() {
 
 	if (GetTickCount64() - Delay > 150) {
 		if (GetAsyncKeyState(VK_MULTIPLY) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || GetAsyncKeyState(VK_F4) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_CONTROL_PRESSED(0, INPUT_FRONTEND_RB)) {
-			AUDIO::PLAY_SOUND_FRONTEND("SELECT", "HUD_SHOP_SOUNDSET", true, 0);
-			if (menulevel == 0) changeMenu("mainmenu");
-			else if (menulevel == 1) backMenu();
+			AUDIO::PLAY_SOUND_FRONTEND("SELECT", "HUD_SHOP_SOUNDSET", true, 0);	
+			if (Controls::menuLevel == 0)
+			{
+				if (Controls::PreviousMenu != NOMENU) { Controls::MoveMenu(Controls::PreviousMenu); Controls::menuLevel = Controls::PreviousMenuLevel; Controls::currentOption = Controls::previousOption; }
+				else { Controls::MoveMenu(SubMenus::MainMenu); }
+			}
+			else
+			{
+				Controls::CloseMenu();
+			}
 			Delay = GetTickCount64();
 		}
 		if (GetAsyncKeyState(VK_NUMPAD0) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_CONTROL_PRESSED(0, INPUT_FRONTEND_CANCEL)) {
-			if (menulevel > 0) { backMenu(); AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0); }
+			if (Controls::menuLevel > 0) { Controls::BackMenu(); AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0); }
 			Delay = GetTickCount64();
 		}
 		if (GetAsyncKeyState(VK_NUMPAD5) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || GetAsyncKeyState(VK_RETURN) && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_CONTROL_PRESSED(0, INPUT_SCRIPT_SELECT)) {
@@ -55,13 +73,13 @@ void Cheat::Controls::CheckKeys() {
 			Delay = GetTickCount64();
 		}
 		if (GetAsyncKeyState(VK_NUMPAD2) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_CONTROL_PRESSED(0, INPUT_FRONTEND_DOWN)) {
-			if (currentoption < optioncount) { currentoption++; } else { currentoption = 1; }
+			Controls::currentOption < Controls::optionCount ? Controls::currentOption++ : Controls::currentOption = 1;
 			AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0);
 			Delay = GetTickCount64();
 			downpress = true;
 		}
 		if (GetAsyncKeyState(VK_NUMPAD8) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_CONTROL_PRESSED(0, INPUT_FRONTEND_UP)) {
-			if (currentoption > 1) { currentoption--; } else { currentoption = optioncount; }
+			Controls::currentOption > 1 ? Controls::currentOption-- : Controls::currentOption = Controls::optionCount;
 			AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0);
 			Delay = GetTickCount64();
 			uppress = true;
@@ -77,4 +95,5 @@ void Cheat::Controls::CheckKeys() {
 			Delay = GetTickCount64();
 		}
 	}
+	Controls::optionCount = 0;
 }

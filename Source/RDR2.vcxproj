@@ -69,6 +69,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Controls.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="invoker.h" />
     <ClInclude Include="natives.h" />
     <ClInclude Include="stdafx.h" />

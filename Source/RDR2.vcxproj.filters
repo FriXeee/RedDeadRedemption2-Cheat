@@ -42,6 +42,9 @@
     <ClInclude Include="natives.h">
       <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">

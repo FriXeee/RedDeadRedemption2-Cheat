@@ -35,10 +35,12 @@
 #include "invoker.h"
 #include "natives.h"
 #include "controls.h"
+#include "GUI.h"
 
 
 namespace Cheat 
 {
+	void Main();
 	namespace CheatFunctions 
 	{
 		std::string ReturnCheatBuildAsString();
@@ -49,7 +51,7 @@ namespace Cheat
 		bool DoesDirectoryExists(const std::string& dirName_in);
 		void CreateNewDirectory(std::string Path);
 		std::string ReturnDateAndTimeAsString();
-		void CreateConsoleWindow();
+		void CreateConsole();
 		char* CombineTwoStrings(char* string1, char* string2);
 		void CheatInitialization();
 		std::string ReadStringFromIni(std::string file, std::string app, std::string key);
@@ -64,6 +66,7 @@ namespace Cheat
 		void DoCustomLocationTeleport(char* Name);
 		bool isWhitespace(std::string s);
 		std::string GetLastErrorAsString();
+		void PostInitCheat();
 	}
 	namespace CheatFeatures
 	{
@@ -125,7 +128,6 @@ namespace Cheat
 	{
 		void GiveAllWeapons(Ped Player);
 		void TPto(Vector3 Coords);
-		void GUILoop();
 		void RequestControlOfId(Entity netid);
 		void RequestControlOfEnt(Entity entity);
 		void PrintSubtitle(const char* Text);
@@ -178,34 +180,37 @@ namespace Cheat
 	}
 	namespace Controls
 	{
-		extern bool isMenuEnabled;
-		extern int optioncount;
-		extern int currentoption;
+		extern void MoveMenu(SubMenus menu);
+		extern void CloseMenu();
+		extern int previousOption;
+		extern void BackMenu();
+		extern int PreviousMenuLevel;
+		extern SubMenus PreviousMenu;
+		extern int menuLevel;
+		extern int optionsArray[1000];
+		extern SubMenus menusArray[1000];
+		extern SubMenus currentMenu;
+		extern int optionCount;
+		extern int currentOption;
 		extern bool optionpress;
 		extern bool leftpress;
 		extern bool rightpress;
 		extern bool uppress;
 		extern bool downpress;
 		extern void CheckKeys();
-		extern bool currentMenu(const char* menuname);
-		extern void changeMenu(const char* menuname);
 	}
 	namespace GUI 
 	{
 		extern void Title(const char* title);
 		extern void End();
 		extern bool Option(const char* option, const char* InformationText);
-		extern bool MenuOption(const char* option, const char* men);
+		extern bool MenuOption(const char* option, SubMenus menu);
 		extern bool BoolOption(const char* option, bool* isEnabled, const char* InformationText);
 		extern bool IntOption(const char* option, int* var, int min, int max, int step, const char* InformationText);
 		extern bool FloatOption(const char* option, float* var, float min, float max, float step, const char* InformationText);
 		extern float MenuXFloat;
 	}
 }
-
-struct rgba {
-	int r, g, b, a;
-};
 
 extern HINSTANCE ModuleHModule;
 extern void WAIT(DWORD ms);

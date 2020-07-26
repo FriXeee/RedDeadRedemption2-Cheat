@@ -499,6 +499,7 @@ void Cheat::Main()
 		case GUISettingsMenu:
 		{
 			GUI::Title("GUI Settings");
+			GUI::BoolOption("Restore To Previous Submenu", &Cheat::Controls::RestorePreviousSubmenu, "When opening restores previous submenu");
 			GUI::FloatOption("MenuX Position", &Cheat::GUI::MenuXFloat, 180.f, 1100.f, 10, "Change MenuX Position");
 		}
 		break;

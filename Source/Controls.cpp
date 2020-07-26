@@ -15,6 +15,7 @@ int Cheat::Controls::PreviousMenuLevel;
 int Cheat::Controls::optionsArray[1000];
 SubMenus Cheat::Controls::menusArray[1000];
 SubMenus Cheat::Controls::currentMenu;
+bool Cheat::Controls::RestorePreviousSubmenu = true;
 int Delay = GetTickCount();
 
 void Cheat::Controls::MoveMenu(SubMenus menu) 
@@ -54,7 +55,7 @@ void Cheat::Controls::CheckKeys() {
 			AUDIO::PLAY_SOUND_FRONTEND("SELECT", "HUD_SHOP_SOUNDSET", true, 0);	
 			if (Controls::menuLevel == 0)
 			{
-				if (Controls::PreviousMenu != NOMENU) { Controls::MoveMenu(Controls::PreviousMenu); Controls::menuLevel = Controls::PreviousMenuLevel; Controls::currentOption = Controls::previousOption; }
+				if (Controls::PreviousMenu != NOMENU && Cheat::Controls::RestorePreviousSubmenu) { Controls::MoveMenu(Controls::PreviousMenu); Controls::menuLevel = Controls::PreviousMenuLevel; Controls::currentOption = Controls::previousOption; }
 				else { Controls::MoveMenu(SubMenus::MainMenu); }
 			}
 			else

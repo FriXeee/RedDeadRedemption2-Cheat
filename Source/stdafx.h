@@ -198,6 +198,7 @@ namespace Cheat
 		extern bool uppress;
 		extern bool downpress;
 		extern void CheckKeys();
+		extern bool RestorePreviousSubmenu;
 	}
 	namespace GUI 
 	{

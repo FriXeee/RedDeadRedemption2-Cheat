@@ -180,6 +180,7 @@ namespace Cheat
 	}
 	namespace Controls
 	{
+		extern int maxVisOptions;
 		extern void MoveMenu(SubMenus menu);
 		extern void CloseMenu();
 		extern int previousOption;

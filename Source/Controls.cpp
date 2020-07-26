@@ -16,6 +16,7 @@ int Cheat::Controls::optionsArray[1000];
 SubMenus Cheat::Controls::menusArray[1000];
 SubMenus Cheat::Controls::currentMenu;
 bool Cheat::Controls::RestorePreviousSubmenu = true;
+int Cheat::Controls::maxVisOptions = 10;
 int Delay = GetTickCount();
 
 void Cheat::Controls::MoveMenu(SubMenus menu) 

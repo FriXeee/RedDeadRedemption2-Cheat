@@ -40,17 +40,17 @@ bool Cheat::GUI::Option(const char* option, const char* InformationText) {
 	bool thisOption = false;
 	if (Cheat::Controls::currentOption == Cheat::Controls::optionCount) thisOption = true;
 
-	if (Cheat::Controls::currentOption <= 14 && Cheat::Controls::optionCount <= 14) {
+	if (Cheat::Controls::currentOption <= Controls::maxVisOptions && Cheat::Controls::optionCount <= Controls::maxVisOptions) {
 		drawText(option, MenuOptionsTextSize, MenuXFloat - 170.f, ((Cheat::Controls::optionCount * 30.f) + 36.5f), optionRGB);
 		if (thisOption) { drawRect(MenuXFloat, ((Cheat::Controls::optionCount * 30.22f) + 46.6f), 350.f, 30.22f, scrollerRGB); }
 		else { drawRect(MenuXFloat, ((Cheat::Controls::optionCount * 30.22f) + 46.6f), 350.f, 30.22f, { 0, 0, 0, 150 }); }
 	}
 
-	else if ((Cheat::Controls::optionCount > (Cheat::Controls::currentOption - 14)) && Cheat::Controls::optionCount <= Cheat::Controls::currentOption)
+	else if ((Cheat::Controls::optionCount > (Cheat::Controls::currentOption - Controls::maxVisOptions)) && Cheat::Controls::optionCount <= Cheat::Controls::currentOption)
 	{
-		drawText(option, MenuOptionsTextSize, MenuXFloat - 170.f, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - 14)) * 30.f) + 36.5f), optionRGB);
-		if (thisOption) { drawRect(MenuXFloat, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - 14)) * 30.22f) + 46.6f), 350.f, 30.22f, scrollerRGB); }
-		else { drawRect(MenuXFloat, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - 14)) * 30.22f) + 46.6f), 350.f, 30.22f, { 0, 0, 0, 150 }); }
+		drawText(option, MenuOptionsTextSize, MenuXFloat - 170.f, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - Controls::maxVisOptions)) * 30.f) + 36.5f), optionRGB);
+		if (thisOption) { drawRect(MenuXFloat, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - Controls::maxVisOptions)) * 30.22f) + 46.6f), 350.f, 30.22f, scrollerRGB); }
+		else { drawRect(MenuXFloat, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - Controls::maxVisOptions)) * 30.22f) + 46.6f), 350.f, 30.22f, { 0, 0, 0, 150 }); }
 	}
 
 	if (thisOption) { InformationTextVar = InformationText; }
@@ -78,7 +78,7 @@ bool Cheat::GUI::MenuOption(const char* option, SubMenus menu) {
 bool Cheat::GUI::BoolOption(const char* option, bool* isEnabled, const char* InformationText) {
 	Option(option, InformationText);
 
-	if (Cheat::Controls::currentOption <= 14 && Cheat::Controls::optionCount <= 14) {
+	if (Cheat::Controls::currentOption <= Controls::maxVisOptions && Cheat::Controls::optionCount <= Controls::maxVisOptions) {
 		drawText(*isEnabled ? xorstr_("~COLOR_GREEN~On") : xorstr_("~COLOR_RED~Off"), MenuOptionsTextSize, MenuXFloat + 135.f, ((Cheat::Controls::optionCount * 30.f) + 36.5f), optionRGB);
 	}
 	else if ((Cheat::Controls::optionCount > (Cheat::Controls::currentOption - 16)) && Cheat::Controls::optionCount <= Cheat::Controls::currentOption)
@@ -96,12 +96,12 @@ bool Cheat::GUI::BoolOption(const char* option, bool* isEnabled, const char* Inf
 bool Cheat::GUI::IntOption(const char* option, int* var, int min, int max, int step, const char* InformationText) {
 	Option(option, InformationText);
 
-	if (Cheat::Controls::currentOption <= 14 && Cheat::Controls::optionCount <= 14) {
+	if (Cheat::Controls::currentOption <= Controls::maxVisOptions && Cheat::Controls::optionCount <= Controls::maxVisOptions) {
 		drawText("<" + std::to_string(*var) + ">", MenuOptionsTextSize, MenuXFloat + 130.f, (Cheat::Controls::optionCount * 30.f) + 36.5f, optionRGB);
 	}
 	else if ((Cheat::Controls::optionCount > (Cheat::Controls::currentOption - 16)) && Cheat::Controls::optionCount <= Cheat::Controls::currentOption)
 	{
-		drawText("<" + std::to_string(*var) + ">", MenuOptionsTextSize, MenuXFloat + 130.f, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - 14)) * 30.f) + 36.5f), optionRGB);
+		drawText("<" + std::to_string(*var) + ">", MenuOptionsTextSize, MenuXFloat + 130.f, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - Controls::maxVisOptions)) * 30.f) + 36.5f), optionRGB);
 	}
 
 	if (Cheat::Controls::currentOption == Cheat::Controls::optionCount) {
@@ -134,12 +134,12 @@ bool Cheat::GUI::FloatOption(const char* option, float* var, float min, float ma
 	char buf[100];
 	_snprintf_s(buf, sizeof(buf), xorstr_("%.2f"), *var);
 
-	if (Cheat::Controls::currentOption <= 14 && Cheat::Controls::optionCount <= 14) {
+	if (Cheat::Controls::currentOption <= Controls::maxVisOptions && Cheat::Controls::optionCount <= Controls::maxVisOptions) {
 		drawText("<" + (std::string)buf + ">", MenuOptionsTextSize, MenuXFloat + 85.f, (Cheat::Controls::optionCount * 30.f) + 37.f, optionRGB);
 	}
 	else if ((Cheat::Controls::optionCount > (Cheat::Controls::currentOption - 16)) && Cheat::Controls::optionCount <= Cheat::Controls::currentOption)
 	{
-		drawText("<" + (std::string)buf + ">", MenuOptionsTextSize, MenuXFloat + 85.f, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - 14)) * 30.f) + 37.f), optionRGB);
+		drawText("<" + (std::string)buf + ">", MenuOptionsTextSize, MenuXFloat + 85.f, (((Cheat::Controls::optionCount - (Cheat::Controls::currentOption - Controls::maxVisOptions)) * 30.f) + 37.f), optionRGB);
 	}
 
 
@@ -169,7 +169,7 @@ void Cheat::GUI::End()
 {
 	if (Cheat::Controls::currentMenu != 0)
 	{
-		if (Cheat::Controls::optionCount <= 14)
+		if (Cheat::Controls::optionCount <= Controls::maxVisOptions)
 		{
 			drawRect(MenuXFloat, 30.22f * Cheat::Controls::optionCount + 62.f, 350.f, 1.f, { 0, 0, 255, 255 });  //Menu bottom line
 			drawRect(MenuXFloat, 30.22f * Cheat::Controls::optionCount + 77.5f, 350.f, 30.f, { 0, 0, 0, 255 });  //Menu bottom draw
@@ -183,14 +183,14 @@ void Cheat::GUI::End()
 		}
 		else
 		{
-			drawRect(MenuXFloat, 30.22f * 14 + 62.f, 350.f, 1.f, { 0, 0, 255, 255 });   //Menu bottom line
-			drawRect(MenuXFloat, 30.22f * 14 + 77.5f, 350.f, 30.f, { 0, 0, 0, 255 });   //Menu bottom draw
-			drawText(Cheat::CheatFunctions::ReturnCheatBuildAsString(), 40.f, MenuXFloat + 115.f, 30.22f * 14 + 67.f, { 255, 255, 255, 255 }, false); //Cheat build number draw
-			drawText(std::to_string(Cheat::Controls::currentOption) + xorstr_(" / ") + std::to_string(Cheat::Controls::optionCount), 40.f, MenuXFloat - 170.f, 30.22f * 14 + 67.f, { 255, 255, 255, 255 }, false); //Option count draw at menu bottom
+			drawRect(MenuXFloat, 30.22f * Controls::maxVisOptions + 62.f, 350.f, 1.f, { 0, 0, 255, 255 });   //Menu bottom line
+			drawRect(MenuXFloat, 30.22f * Controls::maxVisOptions + 77.5f, 350.f, 30.f, { 0, 0, 0, 255 });   //Menu bottom draw
+			drawText(Cheat::CheatFunctions::ReturnCheatBuildAsString(), 40.f, MenuXFloat + 115.f, 30.22f * Controls::maxVisOptions + 67.f, { 255, 255, 255, 255 }, false); //Cheat build number draw
+			drawText(std::to_string(Cheat::Controls::currentOption) + xorstr_(" / ") + std::to_string(Cheat::Controls::optionCount), 40.f, MenuXFloat - 170.f, 30.22f * Controls::maxVisOptions + 67.f, { 255, 255, 255, 255 }, false); //Option count draw at menu bottom
 			if (InformationTextVar != "")
 			{
-				drawRect(MenuXFloat, 30.22f * 14 + 103.f, 350.f, 25.f, { 0, 0, 0, 255 });
-				drawText(InformationTextVar, 40.f, MenuXFloat - 170.f, 30.22f * 14 + 90.f, { 255, 255, 255, 255 }, false);
+				drawRect(MenuXFloat, 30.22f * Controls::maxVisOptions + 103.f, 350.f, 25.f, { 0, 0, 0, 255 });
+				drawText(InformationTextVar, 40.f, MenuXFloat - 170.f, 30.22f * Controls::maxVisOptions + 90.f, { 255, 255, 255, 255 }, false);
 			}
 		}
 	}

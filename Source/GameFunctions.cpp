@@ -19,53 +19,10 @@ void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* d
 
 void Cheat::GameFunctions::GiveAllWeapons(Ped Player)
 {
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_LANTERN_ELECTRIC")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_TORCH")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_BROKEN_SWORD")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_FISHINGROD")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_HATCHET")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_CLEAVER")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_ANCIENT_HATCHET")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_HATCHET_VIKING")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_HATCHET_HEWING")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_HATCHET_DOUBLE_BIT")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_HATCHET_DOUBLE_BIT_RUSTED")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_HATCHET_HUNTER")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_HATCHET_HUNTER_RUSTED")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_KNIFE_JOHN")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_KNIFE")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_KNIFE_JAWBONE")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_THROWN_THROWING_KNIVES")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_KNIFE_MINER")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_KNIFE_CIVIL_WAR")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_KNIFE_VAMPIRE")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_KNIFE_BEAR")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_LASSO")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_MELEE_MACHETE")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_THROWN_TOMAHAWK")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_THROWN_TOMAHAWK_ANCIENT")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_PISTOL_M1899")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_PISTOL_MAUSER")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_PISTOL_MAUSER_DRUNK")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_PISTOL_SEMIAUTO")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_PISTOL_VOLCANIC")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REPEATER_CARBINE")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REPEATER_EVANS")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REPEATER_HENRY")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_RIFLE_VARMINT")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REPEATER_WINCHESTER")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_CATTLEMAN")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_CATTLEMAN_JOHN")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_CATTLEMAN_MEXICAN")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_CATTLEMAN_PIG")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_DOUBLEACTION")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_DOUBLEACTION_EXOTIC")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_DOUBLEACTION_GAMBLER")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_DOUBLEACTION_MICAH")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_LEMAT")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_SCHOFIELD")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_SCHOFIELD_GOLDEN")), 9999, true, true, false, 0.0);
-	WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(xorstr_("WEAPON_REVOLVER_SCHOFIELD_CALLOWAY")), 9999, true, true, false, 0.0);
+	for (auto const& i : Cheat::GameArrays::WeaponHashes)
+	{
+		WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(i.c_str()), 9999, true, true, false, 0.0);
+	}
 }
 
 Vector3 TPCoords;

@@ -142,6 +142,7 @@ namespace Cheat
 	}
 	namespace GameArrays 
 	{
+		extern const std::vector<std::string> WeaponHashes;
 		extern const std::vector<std::string> VehicleModels;
 		extern const std::vector<std::string> PedModels;
 	}

@@ -52,7 +52,6 @@ namespace Cheat
 		void CreateConsoleWindow();
 		char* CombineTwoStrings(char* string1, char* string2);
 		void CheatInitialization();
-		int MessageBoxWithAutoClose(HWND hWnd, const WCHAR* sText, const WCHAR* sCaption, UINT uType, DWORD dwMilliseconds);
 		std::string ReadStringFromIni(std::string file, std::string app, std::string key);
 		bool IsGameWindowFocussed();
 		void LoadConfig(bool StartUp);

@@ -208,7 +208,8 @@ void Cheat::GameFunctions::SpawnPed(const char* ModelHash, Ped PlayerPed)
 
 void Cheat::GameFunctions::DeleteCurrentVehicleHorse()
 {
-	if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), 0)) {
+	if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false)) 
+	{
 		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID());
 		if (ENTITY::DOES_ENTITY_EXIST(veh))
 		{
@@ -218,7 +219,8 @@ void Cheat::GameFunctions::DeleteCurrentVehicleHorse()
 			VEHICLE::DELETE_VEHICLE(&veh);
 		}
 	}
-	else if (PED::IS_PED_ON_MOUNT(PLAYER::PLAYER_PED_ID())) {
+	else if (PED::IS_PED_ON_MOUNT(PLAYER::PLAYER_PED_ID())) 
+	{
 		Ped Horse = PED::GET_MOUNT(PLAYER::PLAYER_PED_ID());
 		if (ENTITY::DOES_ENTITY_EXIST(Horse))
 		{

@@ -11,7 +11,7 @@ void Cheat::CheatFeatures::Loop()
 	double AutoSaveConfig_currentTime = GetTickCount64() - AutoSaveConfig_startTime;
 	if (AutoSaveConfig_currentTime >= 600000) { if (AutoSaveConfigBool) { Cheat::CheatFunctions::SaveConfig(); } AutoSaveConfig_startTime = GetTickCount64(); }
 
-
+	//Features
 	GodmodeBool ? Godmode(true) : Godmode(false);
 	SuperJumpBool ? SuperJump() : NULL;
 	NoRagdollBool ? NoRagdoll(true) : NoRagdoll(false);

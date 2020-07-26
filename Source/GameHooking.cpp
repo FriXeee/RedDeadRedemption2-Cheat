@@ -11,10 +11,8 @@ void OnFiberThreadTick();
 static HANDLE main_fiber;
 static DWORD time_to_wake_up;
 
-//Definitions
 typedef int(__fastcall* get_player_ped_fn)(Player player);
 get_player_ped_fn o_get_player_ped;
-//-----------------------------------------
 
 int __fastcall get_player_ped_hook(Player player) {
 	OnFiberThreadTick();

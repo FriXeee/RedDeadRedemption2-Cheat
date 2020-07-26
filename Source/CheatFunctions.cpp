@@ -126,32 +126,6 @@ char* Cheat::CheatFunctions::CombineTwoStrings(char* string1, char* string2)
 }
 
 
-
-int Cheat::CheatFunctions::MessageBoxWithAutoClose(HWND hWnd, const WCHAR* sText, const WCHAR* sCaption, UINT uType, DWORD dwMilliseconds)
-{
-	typedef int(__stdcall* MSGBOXWAPI)(IN HWND hWnd, IN LPCWSTR lpText, IN LPCWSTR lpCaption, IN UINT uType, IN WORD wLanguageId, IN DWORD dwMilliseconds);
-
-	int iResult;
-
-	HMODULE hUser32 = LoadLibraryA(xorstr_("user32.dll"));
-	if (hUser32)
-	{
-		auto MessageBoxTimeoutW = (MSGBOXWAPI)GetProcAddress(hUser32, xorstr_("MessageBoxTimeoutW"));
-
-		iResult = MessageBoxTimeoutW(hWnd, sText, sCaption, uType, 0, dwMilliseconds);
-
-		FreeLibrary(hUser32);
-	}
-	else
-	{
-		FreeLibrary(hUser32);
-		return 0;
-	}
-
-	return iResult;
-}
-
-
 void Cheat::CheatFunctions::WriteFloatToIni(float floatValue, std::string file, std::string app, std::string key)
 {
 	WriteStringToIni((std::to_string(floatValue)), file, app, key);

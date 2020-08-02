@@ -3,7 +3,7 @@
 
 std::string Cheat::CheatFunctions::ReturnCheatBuildAsString()
 {
-	return xorstr_("1.0.0.0");
+	return xorstr_("1.0.0.1");
 }
 
 const std::string Cheat::CheatFunctions::ReturnCustomTeleportsIniFilePath()

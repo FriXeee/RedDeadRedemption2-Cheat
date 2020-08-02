@@ -48,7 +48,6 @@ void Cheat::GameFunctions::TPto(Vector3 Coords)
 void Cheat::GameFunctions::RequestControlOfId(Entity netid)
 {
 	int tick = 0;
-
 	while (!NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netid) && tick <= 25)
 	{
 		NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netid);

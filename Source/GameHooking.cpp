@@ -34,18 +34,9 @@ void WAIT(DWORD ms) {
 	SwitchToFiber(MainFiber);
 }
 
-void __stdcall fiber_thread(LPVOID params) {
+void __stdcall FiberThread(LPVOID params) {
 	srand(GetTickCount64());
 	Cheat::Main();
-
-	/*
-	while (true) 
-	{
-		Cheat::CheatFeatures::Loop();
-		Cheat::GameFunctions::GUILoop();
-		WAIT(0);
-	}
-	*/
 }
 
 void OnFiberThreadTick() {
@@ -53,5 +44,5 @@ void OnFiberThreadTick() {
 	if (time_to_wake_up > timeGetTime()) { return; }
 	static HANDLE fiber_handle = nullptr;
 	if (fiber_handle) { SwitchToFiber(fiber_handle); }
-	else { fiber_handle = CreateFiber(NULL, fiber_thread, nullptr); }
+	else { fiber_handle = CreateFiber(NULL, FiberThread, nullptr); }
 }

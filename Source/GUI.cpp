@@ -14,7 +14,6 @@ void drawRect(float x, float y, float w, float h, rgba rgba) {
 	GRAPHICS::GET_SCREEN_RESOLUTION(&ResolutionX, &ResolutionY);
 	x /= ResolutionX; w /= ResolutionX;
 	y /= ResolutionY; h /= ResolutionY;
-
 	GRAPHICS::DRAW_RECT(x, y, w, h, rgba.r, rgba.g, rgba.b, rgba.a, 0, 0);
 }
 void Cheat::GUI::drawText(std::string text, float font_size, float x, float y, rgba rgba, bool centered = false) {

@@ -47,21 +47,21 @@ void Cheat::GameFunctions::TPto(Vector3 Coords)
 
 void Cheat::GameFunctions::RequestControlOfId(Entity netid)
 {
-	int tick = 0;
-	while (!NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netid) && tick <= 25)
+	int Tick = 0;
+	while (!NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netid) && Tick <= 25)
 	{
 		NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netid);
-		tick++;
+		Tick++;
 	}
 }
 
 void Cheat::GameFunctions::RequestControlOfEnt(Entity entity)
 {
-	int tick = 0;
-	while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity) && tick <= 25)
+	int Tick = 0;
+	while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity) && Tick <= 25)
 	{
 		NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(entity);
-		tick++;
+		Tick++;
 	}
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
@@ -72,8 +72,7 @@ void Cheat::GameFunctions::RequestControlOfEnt(Entity entity)
 
 void Cheat::GameFunctions::PrintSubtitle(const char* Text)
 {
-	const char* literalString = MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", Text);
-	UILOG::_LOG_SET_CACHED_OBJECTIVE(literalString);
+	UILOG::_LOG_SET_CACHED_OBJECTIVE(MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", Text));
 	UILOG::_LOG_PRINT_CACHED_OBJECTIVE();
 	UILOG::_LOG_CLEAR_CACHED_OBJECTIVE();
 }

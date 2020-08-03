@@ -260,10 +260,10 @@ void Cheat::CheatFeatures::SpectateSelectedPlayer(bool toggle)
 bool Cheat::CheatFeatures::FreezeSelectedPlayerBool = false;
 void Cheat::CheatFeatures::FreezeSelectedPlayer()
 {
-	Ped vic = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
-	TASK::CLEAR_PED_TASKS_IMMEDIATELY(vic, false, false); 
-	TASK::CLEAR_PED_TASKS(vic, false, false); 
-	TASK::CLEAR_PED_SECONDARY_TASK(vic);
+	Ped SelectedPlayerHandle = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
+	TASK::CLEAR_PED_TASKS_IMMEDIATELY(SelectedPlayerHandle, false, false);
+	TASK::CLEAR_PED_TASKS(SelectedPlayerHandle, false, false);
+	TASK::CLEAR_PED_SECONDARY_TASK(SelectedPlayerHandle);
 }
 
 bool Cheat::CheatFeatures::WeaponDamageMultiplierBool = false;
@@ -284,10 +284,11 @@ void Cheat::CheatFeatures::WeaponDamageMultiplier(bool toggle)
 bool Cheat::CheatFeatures::TeleportGunBool = false;
 void Cheat::CheatFeatures::TeleportGun()
 {
-	Vector3 coordz; if (PED::IS_PED_SHOOTING(PLAYER::PLAYER_PED_ID())) 
+	Vector3 coords; 
+	if (PED::IS_PED_SHOOTING(PLAYER::PLAYER_PED_ID())) 
 	{
-		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(PLAYER::PLAYER_PED_ID(), &coordz)) {
-			ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), coordz.x, coordz.y, coordz.z, 1, 0, 0, 1);
+		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(PLAYER::PLAYER_PED_ID(), &coords)) {
+			ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), coords.x, coords.y, coords.z, 1, 0, 0, 1);
 		}
 	}
 }
@@ -295,10 +296,11 @@ void Cheat::CheatFeatures::TeleportGun()
 bool Cheat::CheatFeatures::ExplosiveAmmoBool = false;
 void Cheat::CheatFeatures::ExplosiveAmmo()
 {
-	Vector3 coordz; if (PED::IS_PED_SHOOTING(PLAYER::PLAYER_PED_ID())) 
+	Vector3 coords;
+	if (PED::IS_PED_SHOOTING(PLAYER::PLAYER_PED_ID())) 
 	{
-		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(PLAYER::PLAYER_PED_ID(), &coordz)) {
-			FIRE::ADD_EXPLOSION(coordz.x, coordz.y, coordz.z, 22, 1000.f, true, false, false);
+		if (WEAPON::GET_PED_LAST_WEAPON_IMPACT_COORD(PLAYER::PLAYER_PED_ID(), &coords)) {
+			FIRE::ADD_EXPLOSION(coords.x, coords.y, coords.z, 22, 1000.f, true, false, false);
 		}
 	}
 }

@@ -342,6 +342,7 @@ std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
 	return szName;
 }
 
+
 bool Cheat::CheatFunctions::ReturnPressedKey(int& PressedKey)
 {
 	if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) { PressedKey = VK_LBUTTON; return true; }

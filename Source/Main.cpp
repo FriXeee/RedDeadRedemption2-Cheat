@@ -101,17 +101,17 @@ void Cheat::Main()
 			GUI::Title("Player List");
 			for (int i = 0; i < 32; ++i) {
 				if (ENTITY::DOES_ENTITY_EXIST(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(i))) {
-					if (PLAYER::PLAYER_ID() == i) { GUI::MenuOption(Cheat::CheatFunctions::CombineTwoStrings((char*)PLAYER::GET_PLAYER_NAME(i), "~COLOR_GREEN~[You]"), SelectedPlayerMenu) ? Cheat::CheatFeatures::OnlineSelectedPlayer = i : NULL; }
-					else { GUI::MenuOption(PLAYER::GET_PLAYER_NAME(i), SelectedPlayerMenu) ? Cheat::CheatFeatures::OnlineSelectedPlayer = i : NULL; }
+					if (PLAYER::PLAYER_ID() == i) { GUI::MenuOption(Cheat::CheatFunctions::CombineTwoStrings((char*)PLAYER::GET_PLAYER_NAME(i), "~COLOR_GREEN~[You]"), SelectedPlayerMenu) ? Cheat::CheatFeatures::SelectedPlayer = i : NULL; }
+					else { GUI::MenuOption(PLAYER::GET_PLAYER_NAME(i), SelectedPlayerMenu) ? Cheat::CheatFeatures::SelectedPlayer = i : NULL; }
 				}
 			}
 		}
 		break;
 		case SelectedPlayerMenu:
 		{
-			GUI::Title(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::OnlineSelectedPlayer));
+			GUI::Title(PLAYER::GET_PLAYER_NAME(Cheat::CheatFeatures::SelectedPlayer));
 			if (GUI::BoolOption("Spectate", &Cheat::CheatFeatures::SpectateSelectedPlayerBool, "Spectate selected player"));
-			if (GUI::Option("Teleport To", "Teleport to selected player coords")) { Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::OnlineSelectedPlayer), false, false); Cheat::GameFunctions::TPto(coords); }
+			if (GUI::Option("Teleport To", "Teleport to selected player coords")) { Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer), false, false); Cheat::GameFunctions::TPto(coords); }
 			GUI::MenuOption("Troll Options >", SelectedPlayerTrollMenu);
 			GUI::MenuOption("Spawn Options >", SelectedPlayerSpawnOptionsMenu);
 		}
@@ -120,10 +120,10 @@ void Cheat::Main()
 		{
 			GUI::Title("Troll Options");
 			GUI::BoolOption("Freeze", &Cheat::CheatFeatures::FreezeSelectedPlayerBool, "Freeze selected player LOL");
-			if (GUI::Option("Clone", "Clone selected player ped")) { PED::CLONE_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::OnlineSelectedPlayer), ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::OnlineSelectedPlayer)), 1, 1); }
-			if (GUI::Option("Attach to player", "")) { if (PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::OnlineSelectedPlayer) != PLAYER::PLAYER_PED_ID()) { ENTITY::ATTACH_ENTITY_TO_ENTITY(PLAYER::PLAYER_PED_ID(), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::OnlineSelectedPlayer), 0, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, true, true, false, true, 2, true, NULL, NULL); } }
+			if (GUI::Option("Clone", "Clone selected player ped")) { PED::CLONE_PED(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer), ENTITY::GET_ENTITY_HEADING(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer)), 1, 1); }
+			if (GUI::Option("Attach to player", "")) { if (PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer) != PLAYER::PLAYER_PED_ID()) { ENTITY::ATTACH_ENTITY_TO_ENTITY(PLAYER::PLAYER_PED_ID(), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer), 0, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f, true, true, false, true, 2, true, NULL, NULL); } }
 			if (GUI::Option("Detach from player", "")) { ENTITY::DETACH_ENTITY(PLAYER::PLAYER_PED_ID(), true, true); }
-			if (GUI::Option("Explode Player", "")) { Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::OnlineSelectedPlayer), false, false); FIRE::ADD_EXPLOSION(coords.x, coords.y, coords.z, 22, 1000.f, true, false, false); }
+			if (GUI::Option("Explode Player", "")) { Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer), false, false); FIRE::ADD_EXPLOSION(coords.x, coords.y, coords.z, 22, 1000.f, true, false, false); }
 		}
 		break;
 		case SelectedPlayerSpawnOptionsMenu:
@@ -136,8 +136,8 @@ void Cheat::Main()
 		{
 			GUI::Title("Ped Spawner");
 			GUI::BoolOption("Spawn Ped Dead", &Cheat::CheatFeatures::SpawnPedDeadBool, "Usefull for selling");
-			if (GUI::Option("Custom Input", "")) { MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 50); while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0); const char* SpawnPed = MISC::GET_ONSCREEN_KEYBOARD_RESULT(); if (MISC::GET_ONSCREEN_KEYBOARD_RESULT()) { Cheat::GameFunctions::SpawnPed(SpawnPed, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::OnlineSelectedPlayer)); } }
-			for (auto const& i : Cheat::GameArrays::PedModels) { if (GUI::Option(i.c_str(), "")) { Cheat::GameFunctions::SpawnPed(i.c_str(), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::OnlineSelectedPlayer)); } }
+			if (GUI::Option("Custom Input", "")) { MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 50); while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0); const char* SpawnPed = MISC::GET_ONSCREEN_KEYBOARD_RESULT(); if (MISC::GET_ONSCREEN_KEYBOARD_RESULT()) { Cheat::GameFunctions::SpawnPed(SpawnPed, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer)); } }
+			for (auto const& i : Cheat::GameArrays::PedModels) { if (GUI::Option(i.c_str(), "")) { Cheat::GameFunctions::SpawnPed(i.c_str(), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer)); } }
 		}
 		break;
 		case VehicleOptionsMenu:

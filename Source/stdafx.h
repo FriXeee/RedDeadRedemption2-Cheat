@@ -73,7 +73,7 @@ namespace Cheat
 	{
 		extern bool AutoSaveConfigBool;
 		extern bool TriggerbotShootPlayersBool;
-		extern int OnlineSelectedPlayer;
+		extern int SelectedPlayer;
 		extern bool SpawnVehicleInvincibleBool;
 		extern bool SpawnPedInVehicleBool;
 		extern bool DeleteCurrentVehicleBool;

@@ -2,7 +2,7 @@
 
 bool Cheat::CheatFeatures::AutoSaveConfigBool = true;
 bool Cheat::CheatFeatures::TriggerbotShootPlayersBool = false;
-int Cheat::CheatFeatures::OnlineSelectedPlayer;
+int Cheat::CheatFeatures::SelectedPlayer;
 
 double AutoSaveConfig_startTime = GetTickCount64();
 void Cheat::CheatFeatures::Loop()
@@ -254,13 +254,13 @@ void Cheat::CheatFeatures::HideHUD(bool toggle)
 bool Cheat::CheatFeatures::SpectateSelectedPlayerBool = false;
 void Cheat::CheatFeatures::SpectateSelectedPlayer(bool toggle)
 {
-	NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(toggle, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(OnlineSelectedPlayer));
+	NETWORK::NETWORK_SET_IN_SPECTATOR_MODE(toggle, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer));
 }
 
 bool Cheat::CheatFeatures::FreezeSelectedPlayerBool = false;
 void Cheat::CheatFeatures::FreezeSelectedPlayer()
 {
-	Ped vic = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(OnlineSelectedPlayer); 
+	Ped vic = PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(SelectedPlayer);
 	TASK::CLEAR_PED_TASKS_IMMEDIATELY(vic, false, false); 
 	TASK::CLEAR_PED_TASKS(vic, false, false); 
 	TASK::CLEAR_PED_SECONDARY_TASK(vic);

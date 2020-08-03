@@ -53,7 +53,6 @@ namespace Cheat
 		std::string ReturnDateAndTimeAsString();
 		void CreateConsole();
 		char* CombineTwoStrings(char* string1, char* string2);
-		void CheatInitialization();
 		std::string ReadStringFromIni(std::string file, std::string app, std::string key);
 		bool IsGameWindowFocussed();
 		void LoadConfig(bool StartUp);

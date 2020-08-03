@@ -60,6 +60,7 @@ std::string Cheat::CheatFunctions::ReturnDateAndTimeAsString()
 
 void Cheat::CheatFunctions::CreateConsole()
 {
+	Cheat::LogFunctions::Message(xorstr_("Allocating Console"));
 	AllocConsole();			
 	SetConsoleTitleA(xorstr_("RDR2 Cheat Console"));
 
@@ -305,20 +306,13 @@ void Cheat::CheatFunctions::LoadConfig(bool StartUp)
 }
 
 
-void Cheat::CheatFunctions::CheatInitialization()
-{
-	Cheat::LogFunctions::Message(xorstr_("Allocating Console"));
-	Cheat::CheatFunctions::CreateConsole();
-	Cheat::LogFunctions::Init();
-	if (!GetModuleHandleA(xorstr_("RDR2.exe"))) { Cheat::LogFunctions::Error(xorstr_("Invalid module")); std::exit(EXIT_SUCCESS); }
-	Cheat::LogFunctions::Message(xorstr_("Creating Main Cheat Fiber"));
-	Cheat::GameHooking::Init();
-	if (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::LogFunctions::Message(xorstr_("Waiting until the game has finished loading")); }
-	while (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Sleep(200); }
-}
-
 void Cheat::CheatFunctions::PostInitCheat()
 {
+	//Wait until the game is done loading
+	if (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::LogFunctions::Message(xorstr_("Waiting until the game has finished loading")); }
+	while (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { WAIT(0); }
+
+	//Do post init actions
 	Cheat::CheatFunctions::LoadConfig(true);
 	Cheat::Controls::MoveMenu(MainMenu);
 	Cheat::LogFunctions::Message(xorstr_("RDR2 Cheat Initialization Completed"));

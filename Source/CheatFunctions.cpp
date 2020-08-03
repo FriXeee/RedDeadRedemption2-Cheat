@@ -202,7 +202,7 @@ void Cheat::CheatFunctions::DoCustomLocationTeleport(char* Name)
 		TPCoords.z = std::stof(ZCoord); 
 		Cheat::GameFunctions::TPto(TPCoords);
 	}
-	catch (std::exception& ia)
+	catch (...)
 	{
 		Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~Invalid Custom Teleport Entry - teleporting failed");
 		return;

@@ -526,7 +526,7 @@ DWORD WINAPI InitThread(LPVOID lpParam)
 	if (!GetModuleHandleA(xorstr_("RDR2.exe"))) { Cheat::LogFunctions::Error(xorstr_("Invalid module")); std::exit(EXIT_SUCCESS); }
 	Cheat::GameHooking::Init();
 	//Hook created - this thread is no longer needed
-	ExitThread(EXIT_SUCCESS);
+	return 0;
 }
 
 

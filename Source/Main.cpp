@@ -51,7 +51,7 @@ void Cheat::Main()
 			if (GUI::Option("Custom Input", "Enter custom ped name"))
 			{
 				MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 50);
-				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0);
+				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) Cheat::GameHooking::FiberWait(0, false);
 				const char* ModelChangerCustomInput = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
 				if (MISC::GET_ONSCREEN_KEYBOARD_RESULT())
 				{
@@ -63,7 +63,7 @@ void Cheat::Main()
 					else
 					{
 						STREAMING::REQUEST_MODEL(model, 0);
-						while (!STREAMING::HAS_MODEL_LOADED(model)) { WAIT(0); }
+						while (!STREAMING::HAS_MODEL_LOADED(model)) { Cheat::GameHooking::FiberWait(0); }
 						PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), model, true);
 						PED::SET_PED_RANDOM_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), false);
 						PED::SET_PED_VISIBLE(PLAYER::PLAYER_PED_ID(), true);
@@ -79,7 +79,7 @@ void Cheat::Main()
 					Hash model = MISC::GET_HASH_KEY(i.c_str());
 					if (STREAMING::IS_MODEL_A_PED(model)) {
 						STREAMING::REQUEST_MODEL(model, 0);
-						while (!STREAMING::HAS_MODEL_LOADED(model)) { WAIT(0); }
+						while (!STREAMING::HAS_MODEL_LOADED(model)) { Cheat::GameHooking::FiberWait(0); }
 						PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), model, true);
 						PED::SET_PED_RANDOM_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), false);
 						PED::SET_PED_VISIBLE(PLAYER::PLAYER_PED_ID(), true);
@@ -136,7 +136,8 @@ void Cheat::Main()
 		{
 			GUI::Title("Ped Spawner");
 			GUI::BoolOption("Spawn Ped Dead", &Cheat::CheatFeatures::SpawnPedDeadBool, "Usefull for selling");
-			if (GUI::Option("Custom Input", "")) { MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 50); while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0); const char* SpawnPed = MISC::GET_ONSCREEN_KEYBOARD_RESULT(); if (MISC::GET_ONSCREEN_KEYBOARD_RESULT()) { Cheat::GameFunctions::SpawnPed(SpawnPed, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer)); } }
+			if (GUI::Option("Custom Input", "")) { MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 50); while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) Cheat::GameHooking::FiberWait(0, false); 
+			const char* SpawnPed = MISC::GET_ONSCREEN_KEYBOARD_RESULT(); if (MISC::GET_ONSCREEN_KEYBOARD_RESULT()) { Cheat::GameFunctions::SpawnPed(SpawnPed, PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer)); } }
 			for (auto const& i : Cheat::GameArrays::PedModels) { if (GUI::Option(i.c_str(), "")) { Cheat::GameFunctions::SpawnPed(i.c_str(), PLAYER::GET_PLAYER_PED_SCRIPT_INDEX(Cheat::CheatFeatures::SelectedPlayer)); } }
 		}
 		break;
@@ -157,7 +158,7 @@ void Cheat::Main()
 			if (GUI::Option("Custom Input", ""))
 			{
 				MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 50);
-				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0);
+				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) Cheat::GameHooking::FiberWait(0, false);
 				const char* SpawnVehicle = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
 				if (MISC::GET_ONSCREEN_KEYBOARD_RESULT()) { Cheat::GameFunctions::SpawnVehicle(SpawnVehicle); }
 			}
@@ -357,7 +358,7 @@ void Cheat::Main()
 			if (GUI::Option("Create New Custom Teleport", "Uses current player ped coordinates"))
 			{
 				MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 50);
-				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0);
+				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) Cheat::GameHooking::FiberWait(0, false);
 				const char* CustomTeleportName = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
 				if (MISC::GET_ONSCREEN_KEYBOARD_RESULT())
 				{
@@ -367,7 +368,7 @@ void Cheat::Main()
 			if (GUI::Option("Delete Custom Teleport", "Delete Custom Teleport by name"))
 			{
 				MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 20);
-				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0);
+				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) Cheat::GameHooking::FiberWait(0, false);
 				const char* CustomTeleportName = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
 				if (MISC::GET_ONSCREEN_KEYBOARD_RESULT())
 				{
@@ -461,7 +462,7 @@ void Cheat::Main()
 			if (GUI::Option("Custom Input", ""))
 			{
 				MISC::DISPLAY_ONSCREEN_KEYBOARD(true, "", "", "", "", "", "", 50);
-				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) WAIT(0);
+				while (MISC::UPDATE_ONSCREEN_KEYBOARD() == 0) Cheat::GameHooking::FiberWait(0, false);
 				const char* SpawnPed = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
 				if (MISC::GET_ONSCREEN_KEYBOARD_RESULT()) { Cheat::GameFunctions::SpawnPed(SpawnPed, PLAYER::PLAYER_PED_ID()); }
 			}
@@ -506,7 +507,7 @@ void Cheat::Main()
 			if (GUI::Option(OpenKeyString.c_str(), "Select to change"))
 			{
 				int PressedKey;
-				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::drawText("Press any key to set Open Key, press Escape to cancel", 150.f, 625.f, 40.f, { 255, 255, 255, 255 }, true); WAIT(0); }
+				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::drawText("Press any key to set Open Key, press Escape to cancel", 150.f, 625.f, 40.f, { 255, 255, 255, 255 }, true); Cheat::GameHooking::FiberWait(0); }
 				if (PressedKey == 27) { Cheat::GameFunctions::PrintSubtitle("Canceled Setting Open Key"); break; }
 				if (PressedKey != 0) { Cheat::Controls::openKey = PressedKey; Cheat::GameFunctions::PrintSubtitle("Open Key has been set"); }
 			}
@@ -514,7 +515,7 @@ void Cheat::Main()
 		break;
 		}
 		GUI::End();
-		WAIT(0);
+		Cheat::GameHooking::FiberWait(0, false);
 	}
 }
 

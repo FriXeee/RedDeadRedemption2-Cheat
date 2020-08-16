@@ -154,8 +154,10 @@ namespace Cheat
 	}
 	namespace GameHooking 
 	{
+		extern void FiberWait(DWORD ms, bool ShowMessage = true);
 		void Init();
-		namespace Memory {
+		namespace Memory 
+		{
 			static uintptr_t find_signature(const char* module, const char* pattern_, const char* mask) {
 				const auto compare = [](const uint8_t* data, const uint8_t* pattern, const char* mask_) {
 					for (; *mask_; ++mask_, ++data, ++pattern)
@@ -219,4 +221,3 @@ namespace Cheat
 }
 
 extern HINSTANCE ModuleHModule;
-extern void WAIT(DWORD ms);

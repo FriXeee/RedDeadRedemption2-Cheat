@@ -99,7 +99,7 @@ void Cheat::GameFunctions::TeleportToWaypoint()
 	for (int i = 0; i < sizeof(groundCheckHeight) / sizeof(float); i++)
 	{
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, groundCheckHeight[i], 0, 0, 1);
-		WAIT(100);
+		Cheat::GameHooking::FiberWait(100);
 		if (MISC::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, groundCheckHeight[i], &coords.z, 0))
 		{
 			groundFound = true;
@@ -122,7 +122,7 @@ void Cheat::GameFunctions::SpawnVehicle(const char* ModelHash)
 	if (!STREAMING::IS_MODEL_A_VEHICLE(model) || !STREAMING::IS_MODEL_IN_CDIMAGE(model)) { PrintSubtitle(xorstr_("~COLOR_RED~That is not a valid vehicle model")); return; }
 	STREAMING::REQUEST_MODEL(model, 0);
 	Vector3 pCoords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 0.0, -10.0, 0.0);
-	while (!STREAMING::HAS_MODEL_LOADED(model)) { WAIT(0); }
+	while (!STREAMING::HAS_MODEL_LOADED(model)) { Cheat::GameHooking::FiberWait(0); }
 	Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1, 0);
 	int veh = VEHICLE::CREATE_VEHICLE(model, coords.x, coords.y, coords.z, 0, 0, 0, 0, 1);
 	Cheat::GameFunctions::RequestControlOfEnt(veh);
@@ -145,7 +145,7 @@ void Cheat::GameFunctions::SpawnPed(const char* ModelHash, Ped PlayerPed)
 	Hash ped = MISC::GET_HASH_KEY(ModelHash);
 	if (!STREAMING::IS_MODEL_A_PED(ped)) { GameFunctions::PrintSubtitle(xorstr_("~COLOR_RED~That is not a valid Ped model")); return; }
 	STREAMING::REQUEST_MODEL(ped, 0);
-	while (!STREAMING::HAS_MODEL_LOADED(ped)) { WAIT(0); }
+	while (!STREAMING::HAS_MODEL_LOADED(ped)) { Cheat::GameHooking::FiberWait(0); }
 	Entity player = PlayerPed;
 	Vector3 playerCor = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, 0, 5, 0);
 	Entity spawn = PED::CREATE_PED(ped, playerCor.x, playerCor.y, playerCor.z, 0.f, false, false, false, false, true, true);

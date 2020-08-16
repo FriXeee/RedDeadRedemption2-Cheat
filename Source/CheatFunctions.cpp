@@ -310,7 +310,7 @@ void Cheat::CheatFunctions::PostInitCheat()
 {
 	//Wait until the game is done loading
 	if (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::LogFunctions::Message(xorstr_("Waiting until the game has finished loading")); }
-	while (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { WAIT(0); }
+	while (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::GameHooking::FiberWait(0); }
 
 	//Do post init actions
 	Cheat::CheatFunctions::LoadConfig(true);

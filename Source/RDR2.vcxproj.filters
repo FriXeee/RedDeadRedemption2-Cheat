@@ -16,9 +16,6 @@
     <ClCompile Include="LogFunctions.cpp">
       <Filter>Source Files\Cheat Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Controls.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
     <ClCompile Include="GameArrays.cpp">
       <Filter>Source Files\Game Functions</Filter>
     </ClCompile>
@@ -33,17 +30,17 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Controls.h">
-      <Filter>Header Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="invoker.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
-    <ClInclude Include="natives.h">
-      <Filter>Header Files\Game Hooking</Filter>
-    </ClInclude>
     <ClInclude Include="GUI.h">
       <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives.h">
+      <Filter>Header Files\Game Hooking</Filter>
+    </ClInclude>
+    <ClInclude Include="Invoker.h">
+      <Filter>Header Files\Game Hooking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

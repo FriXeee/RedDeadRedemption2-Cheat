@@ -1,6 +1,6 @@
 #pragma once
 
-static std::map<uintptr_t, DWORD> nativehash_to_address_table = {
+const std::map<uintptr_t, DWORD> nativehash_to_address_table = {
 {0x4ede34fbadd967a6, 0x2ac3e0c },
 {0x83666f9fb8febd4b, 0x2abfde0 },
 {0xc9d9444186b5a374, 0x2abfdf4 },
@@ -7074,7 +7074,8 @@ static Retn invoke_(Handler fn, Args... args)
 	return ctx.Result<Retn>();
 }
 
-static Handler get_handler(uintptr_t hash_) {
+static Handler get_handler(uintptr_t hash_) 
+{
 	static auto base_address = (uintptr_t)GetModuleHandleA(0);
 	auto it = nativehash_to_address_table.find(hash_);
 	if (it != nativehash_to_address_table.end()) {

@@ -19,8 +19,6 @@
 #include <fcntl.h>
 #include <algorithm>
 #include <psapi.h>
-#include <stdint.h>
-#include <tlhelp32.h>
 #pragma comment(lib, "winmm.lib")
 
 
@@ -34,7 +32,7 @@
 
 #include "invoker.h"
 #include "natives.h"
-#include "controls.h"
+#include "Enums.h"
 #include "GUI.h"
 
 
@@ -182,7 +180,7 @@ namespace Cheat
 		}
 
 	}
-	namespace Controls
+	namespace GUI 
 	{
 		extern int openKey;
 		extern int maxVisOptions;
@@ -198,16 +196,13 @@ namespace Cheat
 		extern SubMenus currentMenu;
 		extern int optionCount;
 		extern int currentOption;
-		extern bool optionpress;
+		extern bool OptionSelect;
 		extern bool leftpress;
 		extern bool rightpress;
 		extern bool uppress;
 		extern bool downpress;
-		extern void CheckKeys();
+		extern void ControlsLoop();
 		extern bool RestorePreviousSubmenu;
-	}
-	namespace GUI 
-	{
 		extern void Title(const char* title);
 		extern void End();
 		extern bool Option(const char* option, const char* InformationText);
@@ -216,7 +211,7 @@ namespace Cheat
 		extern bool IntOption(const char* option, int* var, int min, int max, int step, const char* InformationText);
 		extern bool FloatOption(const char* option, float* var, float min, float max, float step, const char* InformationText);
 		extern void drawText(std::string text, float font_size, float x, float y, rgba rgba, bool centered);
-		extern float MenuXFloat;
+		extern float guiX;
 	}
 }
 

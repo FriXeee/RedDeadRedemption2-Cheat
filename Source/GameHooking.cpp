@@ -29,7 +29,7 @@ void Cheat::GameHooking::Init()
 
 void Cheat::GameHooking::FiberWait(DWORD ms, bool ShowMessage)
 {
-	if (ShowMessage) { Cheat::GUI::drawText(xorstr_("One moment please"), 80.f, 500.f, 450.f, { 255, 255, 255 }, true); }
+	if (ShowMessage) { Cheat::GUI::drawText(xorstr_("One moment please"), 80.f, 150.f, 600.f, { 255, 255, 255 }, true); }
 	WakeUpTime = timeGetTime() + ms;
 	SwitchToFiber(MainFiber);
 }

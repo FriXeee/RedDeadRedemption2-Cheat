@@ -10,10 +10,10 @@ void Cheat::Main()
 
 	while (true) 
 	{
-		Cheat::Controls::CheckKeys();
+		Cheat::GUI::ControlsLoop();
 		Cheat::CheatFeatures::Loop();
 
-		switch (Cheat::Controls::currentMenu)
+		switch (Cheat::GUI::currentMenu)
 		{
 		case MainMenu:
 		{
@@ -500,16 +500,16 @@ void Cheat::Main()
 		case GUISettingsMenu:
 		{
 			GUI::Title("GUI Settings");
-			GUI::IntOption("Max Visible Menu Options", &Cheat::Controls::maxVisOptions, 5, 16, 1, "Set Max Visible Menu Options");
-			GUI::BoolOption("Restore To Previous Submenu", &Cheat::Controls::RestorePreviousSubmenu, "When opening restores previous submenu");
-			GUI::FloatOption("MenuX Position", &Cheat::GUI::MenuXFloat, 180.f, 1100.f, 10, "Changes GUI X-Axis Position");
-			std::string OpenKeyString = "Open Key: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::Controls::openKey);
+			GUI::IntOption("Max Visible Menu Options", &Cheat::GUI::maxVisOptions, 5, 16, 1, "Set Max Visible Menu Options");
+			GUI::BoolOption("Restore To Previous Submenu", &Cheat::GUI::RestorePreviousSubmenu, "When opening restores previous submenu");
+			GUI::FloatOption("X-Axis", &Cheat::GUI::guiX, 180.f, 1100.f, 10, "Changes GUI X-Axis Position");
+			std::string OpenKeyString = "Open Key: " + Cheat::CheatFunctions::VirtualKeyCodeToString(Cheat::GUI::openKey);
 			if (GUI::Option(OpenKeyString.c_str(), "Select to change"))
 			{
 				int PressedKey;
 				while (!Cheat::CheatFunctions::ReturnPressedKey(PressedKey)) { Cheat::GUI::drawText("Press any key to set Open Key, press Escape to cancel", 150.f, 625.f, 40.f, { 255, 255, 255, 255 }, true); Cheat::GameHooking::FiberWait(0); }
 				if (PressedKey == 27) { Cheat::GameFunctions::PrintSubtitle("Canceled Setting Open Key"); break; }
-				if (PressedKey != 0) { Cheat::Controls::openKey = PressedKey; Cheat::GameFunctions::PrintSubtitle("Open Key has been set"); }
+				if (PressedKey != 0) { Cheat::GUI::openKey = PressedKey; Cheat::GameFunctions::PrintSubtitle("Open Key has been set"); }
 			}
 		}
 		break;

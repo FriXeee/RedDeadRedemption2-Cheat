@@ -781,5 +781,4 @@ enum eNativeInputs : unsigned
     INPUT_SCRIPTED_FLY_LR = 0xf1111e4a,
     INPUT_SCRIPTED_FLY_ZUP = 0x639b9fc9,
     INPUT_SCRIPTED_FLY_ZDOWN = 0x9c5e030c,
-
 };

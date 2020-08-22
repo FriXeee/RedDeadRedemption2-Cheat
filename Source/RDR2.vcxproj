@@ -68,15 +68,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Controls.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="GUI.h" />
-    <ClInclude Include="invoker.h" />
-    <ClInclude Include="natives.h" />
+    <ClInclude Include="Invoker.h" />
+    <ClInclude Include="Natives.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CheatFunctions.cpp" />
-    <ClCompile Include="Controls.cpp" />
     <ClCompile Include="Features.cpp" />
     <ClCompile Include="GameArrays.cpp" />
     <ClCompile Include="GameFunctions.cpp" />

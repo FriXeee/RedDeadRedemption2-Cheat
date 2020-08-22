@@ -267,7 +267,7 @@ void Cheat::CheatFunctions::SaveConfig()
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::ExplosiveAmmoBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("explosive_ammo"));
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SpawnPedDeadBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("ped_spawner_spawn_dead"));
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::AutoTeleportToWaypointBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("auto_teleport_to_waypoint"));
-	Cheat::CheatFunctions::WriteFloatToIni(Cheat::GUI::MenuXFloat, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("menu_x"));
+	Cheat::CheatFunctions::WriteFloatToIni(Cheat::GUI::guiX, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("menu_x"));
 	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::UnlimitedHorseStaminaBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("unlimited_horse_stamina"));
 }
 
@@ -302,7 +302,7 @@ void Cheat::CheatFunctions::LoadConfig(bool StartUp)
 	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("auto_teleport_to_waypoint")) == xorstr_("true")) { Cheat::CheatFeatures::AutoTeleportToWaypointBool = true; }
 	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("auto_save_config")) == xorstr_("true")) { Cheat::CheatFeatures::AutoSaveConfigBool = true; }
 	else { if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "auto_save_config") == "false") { Cheat::CheatFeatures::AutoSaveConfigBool = false; } }
-	std::string MenuXSetting = Cheat::CheatFunctions::ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("menu_x")); if (MenuXSetting != "" && Cheat::CheatFunctions::IsIntegerInRange(180.00, 1100.00, std::stod(MenuXSetting))) { double MenuXDouble = std::stod(MenuXSetting); Cheat::GUI::MenuXFloat = MenuXDouble; }
+	std::string MenuXSetting = Cheat::CheatFunctions::ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("menu_x")); if (MenuXSetting != "" && Cheat::CheatFunctions::IsIntegerInRange(180.00, 1100.00, std::stod(MenuXSetting))) { double MenuXDouble = std::stod(MenuXSetting); Cheat::GUI::guiX = MenuXDouble; }
 }
 
 
@@ -314,7 +314,7 @@ void Cheat::CheatFunctions::PostInitCheat()
 
 	//Do post init actions
 	Cheat::CheatFunctions::LoadConfig(true);
-	Cheat::Controls::MoveMenu(MainMenu);
+	Cheat::GUI::MoveMenu(MainMenu);
 	Cheat::LogFunctions::Message(xorstr_("RDR2 Cheat Initialization Completed"));
 }
 
@@ -335,6 +335,7 @@ std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
 	case VK_DIVIDE:
 	case VK_NUMLOCK:
 		scanCode |= KF_EXTENDED;
+		break;
 	default:
 		result = GetKeyNameTextA(scanCode << 16, szName, 128);
 	}

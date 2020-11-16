@@ -30,8 +30,8 @@
 #pragma comment(lib, "ThirdParty/MinHook/libMinHook-x64-v141-md.lib")
 
 
-#include "invoker.h"
-#include "natives.h"
+#include "Invoker.h"
+#include "Natives.h"
 #include "Enums.h"
 #include "GUI.h"
 

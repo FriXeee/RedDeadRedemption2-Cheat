@@ -1,7 +1,6 @@
 #pragma once
 #include "stdafx.h"
 
-
 void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* dirZ)
 {
 	float tX, tZ, num;
@@ -15,7 +14,6 @@ void Cheat::GameFunctions::GetCameraDirection(float* dirX, float* dirY, float* d
 	*dirY = (cos(tZ)) * num;
 	*dirZ = sin(tX);
 }
-
 
 void Cheat::GameFunctions::GiveAllWeapons(Ped Player)
 {
@@ -35,7 +33,8 @@ void Cheat::GameFunctions::TPto(Vector3 Coords)
 	}
 	else  
 	{
-		if (PED::IS_PED_ON_MOUNT(Handle)) {
+		if (PED::IS_PED_ON_MOUNT(Handle)) 
+		{
 			ENTITY::SET_ENTITY_COORDS(PED::GET_MOUNT(Handle), Coords.x, Coords.y, Coords.z, 0, 0, 0, 1);
 		}
 		else
@@ -45,38 +44,32 @@ void Cheat::GameFunctions::TPto(Vector3 Coords)
 	}
 }
 
-void Cheat::GameFunctions::RequestControlOfId(Entity netid)
+void Cheat::GameFunctions::RequestControlOfEntity(Entity entity)
 {
-	int Tick = 0;
-	while (!NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netid) && Tick <= 25)
-	{
-		NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netid);
-		Tick++;
-	}
-}
-
-void Cheat::GameFunctions::RequestControlOfEnt(Entity entity)
-{
-	int Tick = 0;
-	while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity) && Tick <= 25)
+	int EntityTick = 0;
+	while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity) && EntityTick <= 25)
 	{
 		NETWORK::NETWORK_REQUEST_CONTROL_OF_ENTITY(entity);
-		Tick++;
+		EntityTick++;
 	}
 	if (NETWORK::NETWORK_IS_SESSION_STARTED())
 	{
 		int netID = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(entity);
-		RequestControlOfId(netID);
+		int NetTick = 0;
+		while (!NETWORK::NETWORK_HAS_CONTROL_OF_NETWORK_ID(netID) && NetTick <= 25)
+		{
+			NETWORK::NETWORK_REQUEST_CONTROL_OF_NETWORK_ID(netID);
+			NetTick++;
+		}
 	}
 }
 
-void Cheat::GameFunctions::PrintSubtitle(const char* Text)
+void Cheat::GameFunctions::PrintSubtitle(std::string Text)
 {
-	UILOG::_UILOG_SET_CACHED_OBJECTIVE(MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", Text));
+	UILOG::_UILOG_SET_CACHED_OBJECTIVE(MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", Text.c_str()));
 	UILOG::_UILOG_PRINT_CACHED_OBJECTIVE();
 	UILOG::_UILOG_CLEAR_CACHED_OBJECTIVE();
 }
-
 
 void Cheat::GameFunctions::TeleportToWaypoint()
 {
@@ -94,8 +87,7 @@ void Cheat::GameFunctions::TeleportToWaypoint()
 	}
 
 	bool groundFound = false;
-	static float groundCheckHeight[] =
-	{ 100.0, 150.0, 50.0, 0.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0, 1050.0 };
+	static float groundCheckHeight[] = { 50.0, 100.0, 150.0, 50.0, 0.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0 };
 	for (int i = 0; i < sizeof(groundCheckHeight) / sizeof(float); i++)
 	{
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, groundCheckHeight[i], 0, 0, 1);
@@ -125,7 +117,7 @@ void Cheat::GameFunctions::SpawnVehicle(const char* ModelHash)
 	while (!STREAMING::HAS_MODEL_LOADED(model)) { Cheat::GameHooking::FiberWait(0); }
 	Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1, 0);
 	int veh = VEHICLE::CREATE_VEHICLE(model, coords.x, coords.y, coords.z, 0, 0, 0, 0, 1);
-	Cheat::GameFunctions::RequestControlOfEnt(veh);
+	Cheat::GameFunctions::RequestControlOfEntity(veh);
 	VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh, 0);
 	ENTITY::SET_ENTITY_VISIBLE(veh, true);
 	NETWORK::NETWORK_REGISTER_ENTITY_AS_NETWORKED(veh);
@@ -149,7 +141,7 @@ void Cheat::GameFunctions::SpawnPed(const char* ModelHash, Ped PlayerPed)
 	Entity player = PlayerPed;
 	Vector3 playerCor = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, 0, 5, 0);
 	Entity spawn = PED::CREATE_PED(ped, playerCor.x, playerCor.y, playerCor.z, 0.f, true, false, false, false);
-	Cheat::GameFunctions::RequestControlOfEnt(spawn);
+	Cheat::GameFunctions::RequestControlOfEntity(spawn);
 	ENTITY::SET_ENTITY_VISIBLE(spawn, true);
 	NETWORK::NETWORK_REGISTER_ENTITY_AS_NETWORKED(spawn);
 	NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_PED(spawn), true);
@@ -168,9 +160,8 @@ void Cheat::GameFunctions::DeleteCurrentVehicleHorse()
 		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID());
 		if (ENTITY::DOES_ENTITY_EXIST(veh))
 		{
-			int netID = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(veh);
-			Cheat::GameFunctions::RequestControlOfId(netID);
-			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, 1, 1);
+			RequestControlOfEntity(veh);
+			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, true, true);
 			VEHICLE::DELETE_VEHICLE(&veh);
 		}
 	}
@@ -179,20 +170,13 @@ void Cheat::GameFunctions::DeleteCurrentVehicleHorse()
 		Ped Horse = PED::GET_MOUNT(PLAYER::PLAYER_PED_ID());
 		if (ENTITY::DOES_ENTITY_EXIST(Horse))
 		{
-			int netID = NETWORK::NETWORK_GET_NETWORK_ID_FROM_ENTITY(Horse);
-			Cheat::GameFunctions::RequestControlOfId(netID);
-			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(Horse, 1, 1);
+			RequestControlOfEntity(Horse);
+			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(Horse, true, true);
 			ENTITY::DELETE_ENTITY(&Horse);
 		}
 	}
 	else
 	{
 		Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~You are not in a vehicle or on a horse");
-		return;
 	}
-}
-
-void Cheat::GameFunctions::ShowPlayerInformationBox(Player Player)
-{
-
 }

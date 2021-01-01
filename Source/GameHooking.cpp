@@ -1,30 +1,38 @@
-#pragma once
 #include "stdafx.h"
-#include "invoker.h"
-#include "natives.h"
-
 
 DWORD										wakeAt;
-void										OnFiberThreadTick();
 static HANDLE								MainFiber;
 static DWORD								WakeUpTime;
 typedef int(__fastcall* get_player_ped_fn)	(Player player);
-get_player_ped_fn							o_get_player_ped;
-void __stdcall								FiberThread(LPVOID params);
+get_player_ped_fn							GetPlayerPedOriginal;
 
-int __fastcall get_player_ped_hook(Player PlayerHandle) 
+void ScriptFunction(LPVOID lpParameter)
 {
-	OnFiberThreadTick();
-	return o_get_player_ped(PlayerHandle);
+	srand(GetTickCount64());
+	Cheat::Main();
+}
+
+int GetPlayedPedHooked(Player PlayerHandle) 
+{
+	if (!MainFiber) { MainFiber = ConvertThreadToFiber(nullptr); }
+	if (WakeUpTime > timeGetTime()) { goto ReturnOriginal; }
+	static HANDLE MainFiberHandle = nullptr;
+	if (MainFiberHandle) { SwitchToFiber(MainFiberHandle); }
+	else { MainFiberHandle = CreateFiber(NULL, ScriptFunction, nullptr); }
+
+ReturnOriginal:
+	return GetPlayerPedOriginal(PlayerHandle);
 }
 
 void Cheat::GameHooking::Init() 
 {
-	Cheat::LogFunctions::Message("Hooking Game Function & Creating Main Cheat Fiber");
-	if (MH_Initialize() != MH_OK) { Cheat::LogFunctions::Error("Failed to initialize MinHook"); std::exit(EXIT_SUCCESS); }
-	uintptr_t GetPlayerPedPointer = Memory::find_signature(0, "\x40\x53\x48\x83\xEC\x20\x33\xDB\x81\xF9", "xxxxxxxxxx");
-	if (MH_CreateHook((PVOID)GetPlayerPedPointer, get_player_ped_hook, reinterpret_cast<void**>(&o_get_player_ped)) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook GET_PLAYER_PED"); std::exit(EXIT_SUCCESS); }
-	if (MH_EnableHook((PVOID)GetPlayerPedPointer)) { Cheat::LogFunctions::Error("Failed to enable GET_PLAYER_PED hook"); std::exit(EXIT_SUCCESS); }
+	Cheat::LogFunctions::Message("Hooking Game Function & Creating Main Fiber");
+	if (MH_Initialize() != MH_OK) { Cheat::LogFunctions::Error("Failed to initialize MinHook", true); std::exit(EXIT_SUCCESS); }
+	Cheat::LogFunctions::DebugMessage("Initialized MinHook");
+	Cheat::LogFunctions::DebugMessage("Hooking 'GET_PLAYER_PED'");
+	uintptr_t GetPlayerPedPointer = Memory::find_signature(NULL, "\x40\x53\x48\x83\xEC\x20\x33\xDB\x81\xF9", "xxxxxxxxxx");
+	if (MH_CreateHook((PVOID)GetPlayerPedPointer, GetPlayedPedHooked, reinterpret_cast<void**>(&GetPlayerPedOriginal)) != MH_OK) { Cheat::LogFunctions::Error("Failed to hook GET_PLAYER_PED", true); std::exit(EXIT_SUCCESS); }
+	if (MH_EnableHook((PVOID)GetPlayerPedPointer)) { Cheat::LogFunctions::Error("Failed to enable GET_PLAYER_PED hook", true); std::exit(EXIT_SUCCESS); }
 }
 
 void Cheat::GameHooking::FiberWait(DWORD ms, bool ShowMessage)
@@ -32,19 +40,4 @@ void Cheat::GameHooking::FiberWait(DWORD ms, bool ShowMessage)
 	if (ShowMessage) { Cheat::GUI::drawText("One moment please", 80.f, 150.f, 600.f, { 255, 255, 255 }, true); }
 	WakeUpTime = timeGetTime() + ms;
 	SwitchToFiber(MainFiber);
-}
-
-void __stdcall FiberThread(LPVOID params) 
-{
-	srand(GetTickCount64());
-	Cheat::Main();
-}
-
-void OnFiberThreadTick() 
-{
-	if (!MainFiber) { MainFiber = ConvertThreadToFiber(nullptr); }
-	if (WakeUpTime > timeGetTime()) { return; }
-	static HANDLE fiber_handle = nullptr;
-	if (fiber_handle) { SwitchToFiber(fiber_handle); }
-	else { fiber_handle = CreateFiber(NULL, FiberThread, nullptr); }
 }

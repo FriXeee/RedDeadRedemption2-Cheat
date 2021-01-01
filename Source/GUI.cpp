@@ -254,7 +254,7 @@ void Cheat::GUI::ControlsLoop()
 	OptionSelect = false;
 	if (GetTickCount64() - Delay > 150) 
 	{
-		if (GetAsyncKeyState(GUI::openKey) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_RB))
+		if (GetAsyncKeyState(GUI::openKey) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 		{
 			AUDIO::PLAY_SOUND_FRONTEND("SELECT", "HUD_SHOP_SOUNDSET", true, 0);
 			if (GUI::menuLevel == 0)
@@ -274,35 +274,38 @@ void Cheat::GUI::ControlsLoop()
 			}
 			Delay = GetTickCount64();
 		}
-		if (GetAsyncKeyState(VK_NUMPAD0) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_CANCEL)) {
+		if (GetAsyncKeyState(VK_NUMPAD0) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
+		{
 			if (GUI::menuLevel > 0) { GUI::BackMenu(); AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0); }
 			Delay = GetTickCount64();
 		}
-		if (GetAsyncKeyState(VK_NUMPAD5) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || GetAsyncKeyState(VK_RETURN) && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_SCRIPT_SELECT)) {
+		if (GetAsyncKeyState(VK_NUMPAD5) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed() || GetAsyncKeyState(VK_RETURN) && Cheat::CheatFunctions::IsGameWindowFocussed())
+		{
 			OptionSelect = true;
 			AUDIO::PLAY_SOUND_FRONTEND("SELECT", "HUD_SHOP_SOUNDSET", true, 0);
 			Delay = GetTickCount64();
 		}
-		if (GetAsyncKeyState(VK_NUMPAD2) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_DOWN)) {
+		if (GetAsyncKeyState(VK_NUMPAD2) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
+		{
 			GUI::currentOption < GUI::optionCount ? GUI::currentOption++ : GUI::currentOption = 1;
 			AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0);
 			Delay = GetTickCount64();
 			downpress = true;
 		}
-		if (GetAsyncKeyState(VK_NUMPAD8) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_UP))
+		if (GetAsyncKeyState(VK_NUMPAD8) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 		{
 			GUI::currentOption > 1 ? GUI::currentOption-- : GUI::currentOption = GUI::optionCount;
 			AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0);
 			Delay = GetTickCount64();
 			uppress = true;
 		}
-		if (GetAsyncKeyState(VK_NUMPAD4) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_LEFT))
+		if (GetAsyncKeyState(VK_NUMPAD4) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 		{
 			leftpress = true;
 			AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0);
 			Delay = GetTickCount64();
 		}
-		if (GetAsyncKeyState(VK_NUMPAD6) & 1 && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, INPUT_FRONTEND_RIGHT))
+		if (GetAsyncKeyState(VK_NUMPAD6) & 0x8000 && Cheat::CheatFunctions::IsGameWindowFocussed())
 		{
 			rightpress = true;
 			AUDIO::PLAY_SOUND_FRONTEND("BACK", "HUD_SHOP_SOUNDSET", true, 0);

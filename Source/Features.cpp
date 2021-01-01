@@ -23,7 +23,7 @@ void Cheat::CheatFeatures::Loop()
 	InvisibleBool ? Invisible(true) : Invisible(false);
 	InfiniteStaminaBool ? InfiniteStamina() : NULL;
 	InfiniteAmmoBool ? InfiniteAmmo() : NULL;
-	NoClipBool ? NoClip() : NULL;
+	NoClipBool ? NoClip() : NoClipWasEnabled ? ENTITY::SET_ENTITY_COLLISION(PLAYER::PLAYER_PED_ID(), true, true), NoClipWasEnabled = false : NULL;
 	AutoTeleportToWaypointBool ? AutoTeleportToWaypoint() : NULL;
 	HideHUDBool ? HideHUD(true) : HideHUD(false);
 	SpectateSelectedPlayerBool ? SpectateSelectedPlayer(true) : SpectateSelectedPlayer(false);
@@ -35,7 +35,6 @@ void Cheat::CheatFeatures::Loop()
 	VehicleInvisibleBool ? VehicleInvisible(true) : VehicleInvisible(false);
 	UnlimitedHorseStaminaBool ? UnlimitedHorseStamina() : NULL;
 }
-
 
 
 
@@ -172,10 +171,11 @@ void Cheat::CheatFeatures::InfiniteAmmo()
 	}
 }
 
-
 bool Cheat::CheatFeatures::NoClipBool = false;
+bool Cheat::CheatFeatures::NoClipWasEnabled = false;
 void Cheat::CheatFeatures::NoClip()
 {
+	NoClipWasEnabled = true;
 	float x, y, z;
 	float d = 0.049999;
 
@@ -204,7 +204,7 @@ void Cheat::CheatFeatures::NoClip()
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, Pos.x, Pos.y, Pos.z, 0, 0, 0);
 		if (ENTITY::DOES_ENTITY_EXIST(entity))
 		{
-			if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, 232)) //RT. Original index // was 24
+			if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed()) //RT. Original index // was 24
 			{
 				ENTITY::SET_ENTITY_COLLISION(entity, false, false);
 				ENTITY::SET_ENTITY_COORDS_NO_OFFSET(entity, Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);
@@ -219,7 +219,7 @@ void Cheat::CheatFeatures::NoClip()
 		ENTITY::SET_ENTITY_COLLISION(PLAYER::PLAYER_PED_ID(), true, true);
 		ENTITY::SET_ENTITY_ROTATION(PLAYER::PLAYER_PED_ID(), rotation.x, rotation.y, rotation.z, 2, 1);
 		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(PLAYER::PLAYER_PED_ID(), Pos.x, Pos.y, Pos.z, 0, 0, 0);
-		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed() || PAD::IS_DISABLED_CONTROL_PRESSED(0, 232))
+		if (GetAsyncKeyState(0x57) && Cheat::CheatFunctions::IsGameWindowFocussed())
 		{
 			ENTITY::SET_ENTITY_COLLISION(PLAYER::PLAYER_PED_ID(), false, false);
 			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(PLAYER::PLAYER_PED_ID(), Pos.x + (x * d), Pos.y + (y * d), Pos.z + (z * d), 0, 0, 0);

@@ -1,6 +1,22 @@
 #pragma once
 #include "stdafx.h"
 
+Player Cheat::GameFunctions::PlayerID;
+Ped Cheat::GameFunctions::PlayerPedID;
+void Cheat::CheatFunctions::LoopedFunctions()
+{
+	//Player ID's and Ped
+	Cheat::GameFunctions::PlayerID = PLAYER::PLAYER_ID();
+	Cheat::GameFunctions::PlayerPedID = PLAYER::PLAYER_PED_ID();
+
+	//Features
+	Cheat::CheatFeatures::Loop();
+
+	//Controls
+	Cheat::GUI::ControlsLoop();
+
+}
+
 std::string Cheat::CheatFunctions::ReturnCheatBuildAsString()
 {
 	return "1.0.0.1";
@@ -72,14 +88,13 @@ void Cheat::CheatFunctions::CreateConsole()
 	CloseHandle(ConsoleWindowHandle);
 
 	//Disable Close Button Off Console Window And Set Max Window Size
-	HWND hwnd = ::GetConsoleWindow();
+	HWND hwnd = GetConsoleWindow();
 	if (hwnd != NULL)
 	{
 		SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_MAXIMIZEBOX & ~WS_SIZEBOX);
 
-		HMENU hMenu = ::GetSystemMenu(hwnd, FALSE);
+		HMENU hMenu = GetSystemMenu(hwnd, FALSE);
 		if (hMenu != NULL) DeleteMenu(hMenu, SC_CLOSE, MF_BYCOMMAND);
-
 
 		//Disable Console Quick Edit Mode
 		HANDLE stdIn = GetStdHandle(STD_INPUT_HANDLE);
@@ -309,10 +324,6 @@ void Cheat::CheatFunctions::LoadConfig(bool StartUp)
 
 void Cheat::CheatFunctions::PostInitCheat()
 {
-	//Wait until the game is done loading
-	if (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::LogFunctions::Message("Waiting until the game has finished loading"); }
-	while (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::GameHooking::FiberWait(0); }
-
 	//Do post init actions
 	Cheat::CheatFunctions::LoadConfig(true);
 	Cheat::GUI::MoveMenu(MainMenu);

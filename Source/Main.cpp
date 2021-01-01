@@ -10,11 +10,9 @@ void Cheat::Main()
 
 	while (true) 
 	{
-		Cheat::GUI::ControlsLoop();
-		Cheat::CheatFeatures::Loop();
-
-		switch (Cheat::GUI::currentMenu)
-		{
+		Cheat::CheatFunctions::LoopedFunctions();
+	
+		switch (Cheat::GUI::currentMenu){
 		case MainMenu:
 		{
 			GUI::Title("RDR2 Cheat");
@@ -522,8 +520,7 @@ void Cheat::Main()
 DWORD WINAPI InitThread(LPVOID lpParam)
 {
 	Cheat::CheatFunctions::CreateConsole();
-	Cheat::LogFunctions::Init();
-	if (!GetModuleHandleA("RDR2.exe")) { Cheat::LogFunctions::Error("Invalid module"); std::exit(EXIT_SUCCESS); }
+	std::cout << Cheat::CheatFunctions::ReturnDateAndTimeAsString() << " [Init] " << "Initializing RDR2 Cheat" << " | Github Repository: https://github.com/HowYouDoinMate/RedDeadRedemption2-Cheat" << std::endl;
 	Cheat::GameHooking::Init();
 	//Hook created - this thread is no longer needed
 	return 0;

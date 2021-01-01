@@ -38,6 +38,7 @@ namespace Cheat
 	void Main();
 	namespace CheatFunctions 
 	{
+		void LoopedFunctions();
 		std::string ReturnCheatBuildAsString();
 		const std::string ReturnCustomTeleportsIniFilePath();
 		std::string ReturnConfigFilePath();
@@ -98,6 +99,7 @@ namespace Cheat
 		extern bool InfiniteAmmoBool;
 		extern void InfiniteAmmo();
 		extern bool NoClipBool;
+		extern bool NoClipWasEnabled;
 		extern void NoClip();
 		extern bool AutoTeleportToWaypointBool;
 		extern void AutoTeleportToWaypoint();
@@ -122,16 +124,16 @@ namespace Cheat
 	}
 	namespace GameFunctions 
 	{
+		extern Player PlayerID;
+		extern Ped PlayerPedID;
 		void GiveAllWeapons(Ped Player);
 		void TPto(Vector3 Coords);
-		void RequestControlOfId(Entity netid);
-		void RequestControlOfEnt(Entity entity);
-		void PrintSubtitle(const char* Text);
+		void RequestControlOfEntity(Entity entity);
+		void PrintSubtitle(std::string Text);
 		void TeleportToWaypoint();
 		void SpawnVehicle(const char* ModelHash);
 		void SpawnPed(const char* ModelHash, Ped PlayerPed);
 		void DeleteCurrentVehicleHorse();
-		void ShowPlayerInformationBox(Player Player);
 		void GetCameraDirection(float* dirX, float* dirY, float* dirZ);
 	}
 	namespace GameArrays 
@@ -142,9 +144,9 @@ namespace Cheat
 	}
 	namespace LogFunctions 
 	{
-		void Init();
 		void Message(char* Message);
-		void Error(char* Message);
+		void MessageCustomCategory(std::string CategoryName, std::string Message);
+		void Error(char* Message, bool ShowMessageBox);
 		void DebugMessage(char* Message);
 	}
 	namespace GameHooking 
@@ -153,29 +155,37 @@ namespace Cheat
 		void Init();
 		namespace Memory 
 		{
-			static uintptr_t find_signature(const char* module, const char* pattern_, const char* mask) {
-				const auto compare = [](const uint8_t* data, const uint8_t* pattern, const char* mask_) {
+			static uintptr_t find_signature(const char* module, const char* pattern_, const char* mask) 
+			{
+				const auto compare = [](const uint8_t* data, const uint8_t* pattern, const char* mask_) 
+				{
 					for (; *mask_; ++mask_, ++data, ++pattern)
+					{
 						if (*mask_ == 'x' && *data != *pattern)
+						{
 							return false;
-
+						}
+					}
 					return (*mask_) == 0;
 				};
 
 
 				MODULEINFO module_info = {};
-				GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(module), &module_info, sizeof MODULEINFO);
-
-				auto module_start = uintptr_t(module_info.lpBaseOfDll);
-				const uint8_t* pattern = reinterpret_cast<const uint8_t*>(pattern_);
-				for (size_t i = 0; i < module_info.SizeOfImage; i++)
-					if (compare(reinterpret_cast<uint8_t*>(module_start + i), pattern, mask))
-						return module_start + i;
-
+				if (GetModuleInformation(GetCurrentProcess(), GetModuleHandleA(module), &module_info, sizeof(MODULEINFO)))
+				{
+					auto module_start = uintptr_t(module_info.lpBaseOfDll);
+					const uint8_t* pattern = reinterpret_cast<const uint8_t*>(pattern_);
+					for (size_t i = 0; i < module_info.SizeOfImage; i++)
+					{
+						if (compare(reinterpret_cast<uint8_t*>(module_start + i), pattern, mask)) 
+						{
+							return module_start + i;
+						}
+					}
+				}
 				return 0;
 			}
 		}
-
 	}
 	namespace GUI
 	{

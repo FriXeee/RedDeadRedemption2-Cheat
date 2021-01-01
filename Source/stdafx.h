@@ -177,7 +177,7 @@ namespace Cheat
 		}
 
 	}
-	namespace GUI 
+	namespace GUI
 	{
 		extern int openKey;
 		extern int maxVisOptions;

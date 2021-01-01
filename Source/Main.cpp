@@ -66,7 +66,7 @@ void Cheat::Main()
 						while (!STREAMING::HAS_MODEL_LOADED(model)) { Cheat::GameHooking::FiberWait(0); }
 						PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), model, true);
 						PED::SET_PED_RANDOM_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), false);
-						PED::SET_PED_VISIBLE(PLAYER::PLAYER_PED_ID(), true);
+						PED::_SET_RANDOM_OUTFIT_VARIATION(PLAYER::PLAYER_PED_ID(), true);
 						ENTITY::_SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), 0);
 						STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
 					}
@@ -82,7 +82,7 @@ void Cheat::Main()
 						while (!STREAMING::HAS_MODEL_LOADED(model)) { Cheat::GameHooking::FiberWait(0); }
 						PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), model, true);
 						PED::SET_PED_RANDOM_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID(), false);
-						PED::SET_PED_VISIBLE(PLAYER::PLAYER_PED_ID(), true);
+						PED::_SET_RANDOM_OUTFIT_VARIATION(PLAYER::PLAYER_PED_ID(), true);
 						ENTITY::_SET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID(), PED::GET_PED_MAX_HEALTH(PLAYER::PLAYER_PED_ID()), 0);
 						STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);
 					}
@@ -421,29 +421,29 @@ void Cheat::Main()
 		case WeatherOptionsMenu:
 		{
 			GUI::Title("Weather Options");
-			if (GUI::Option("Sunny", "")) { MISC::SET_WEATHER_TYPE(0x614A1F91, true, true, true, 0, true); }
-			if (GUI::Option("Overcast", "")) { MISC::SET_WEATHER_TYPE(0xBB898D2D, true, true, true, 0, true); }
-			if (GUI::Option("Blizzard", "")) { MISC::SET_WEATHER_TYPE(0x27EA2814, true, true, true, 0, true); }
-			if (GUI::Option("Clouds", "")) { MISC::SET_WEATHER_TYPE(0x30FDAF5C, true, true, true, 0, true); }
-			if (GUI::Option("Drizzle", "")) { MISC::SET_WEATHER_TYPE(0x995C7F44, true, true, true, 0, true); }
-			if (GUI::Option("Fog", "")) { MISC::SET_WEATHER_TYPE(0xD61BDE01, true, true, true, 0, true); }
-			if (GUI::Option("Ground Blizzard", "")) { MISC::SET_WEATHER_TYPE(0x7F622122, true, true, true, 0, true); }
-			if (GUI::Option("Hail", "")) { MISC::SET_WEATHER_TYPE(0x75A9E268, true, true, true, 0, true); }
-			if (GUI::Option("High Pressure", "")) { MISC::SET_WEATHER_TYPE(0xF5A87B65, true, true, true, 0, true); }
-			if (GUI::Option("Hurricane", "")) { MISC::SET_WEATHER_TYPE(0x320D0951, true, true, true, 0, true); }
-			if (GUI::Option("Misty", "")) { MISC::SET_WEATHER_TYPE(0x5974E8E5, true, true, true, 0, true); }
-			if (GUI::Option("Overcast Dark", "")) { MISC::SET_WEATHER_TYPE(0x19D4F1D9, true, true, true, 0, true); }
-			if (GUI::Option("Rain", "")) { MISC::SET_WEATHER_TYPE(0x54A69840, true, true, true, 0, true); }
-			if (GUI::Option("Sandstorm", "")) { MISC::SET_WEATHER_TYPE(0xB17F6111, true, true, true, 0, true); }
-			if (GUI::Option("Shower", "")) { MISC::SET_WEATHER_TYPE(0xE72679D5, true, true, true, 0, true); }
-			if (GUI::Option("Sleet", "")) { MISC::SET_WEATHER_TYPE(0xCA71D7C, true, true, true, 0, true); }
-			if (GUI::Option("Snow", "")) { MISC::SET_WEATHER_TYPE(0xEFB6EFF6, true, true, true, 0, true); }
-			if (GUI::Option("Snow Clearing", "")) { MISC::SET_WEATHER_TYPE(0x641DFC11, true, true, true, 0, true); }
-			if (GUI::Option("Snow Light", "")) { MISC::SET_WEATHER_TYPE(0x23FB812B, true, true, true, 0, true); }
-			if (GUI::Option("Sunny", "")) { MISC::SET_WEATHER_TYPE(0x614A1F91, true, true, true, 0, true); }
-			if (GUI::Option("Thunder", "")) { MISC::SET_WEATHER_TYPE(0xB677829F, true, true, true, 0, true); }
-			if (GUI::Option("Thunderstorm", "")) { MISC::SET_WEATHER_TYPE(0x7C1C4A13, true, true, true, 0, true); }
-			if (GUI::Option("White Out", "")) { MISC::SET_WEATHER_TYPE(0x2B402288, true, true, true, 0, true); }
+			if (GUI::Option("Sunny", "")) { MISC::_SET_WEATHER_TYPE(0x614A1F91, true, true, true, 0, true); }
+			if (GUI::Option("Overcast", "")) { MISC::_SET_WEATHER_TYPE(0xBB898D2D, true, true, true, 0, true); }
+			if (GUI::Option("Blizzard", "")) { MISC::_SET_WEATHER_TYPE(0x27EA2814, true, true, true, 0, true); }
+			if (GUI::Option("Clouds", "")) { MISC::_SET_WEATHER_TYPE(0x30FDAF5C, true, true, true, 0, true); }
+			if (GUI::Option("Drizzle", "")) { MISC::_SET_WEATHER_TYPE(0x995C7F44, true, true, true, 0, true); }
+			if (GUI::Option("Fog", "")) { MISC::_SET_WEATHER_TYPE(0xD61BDE01, true, true, true, 0, true); }
+			if (GUI::Option("Ground Blizzard", "")) { MISC::_SET_WEATHER_TYPE(0x7F622122, true, true, true, 0, true); }
+			if (GUI::Option("Hail", "")) { MISC::_SET_WEATHER_TYPE(0x75A9E268, true, true, true, 0, true); }
+			if (GUI::Option("High Pressure", "")) { MISC::_SET_WEATHER_TYPE(0xF5A87B65, true, true, true, 0, true); }
+			if (GUI::Option("Hurricane", "")) { MISC::_SET_WEATHER_TYPE(0x320D0951, true, true, true, 0, true); }
+			if (GUI::Option("Misty", "")) { MISC::_SET_WEATHER_TYPE(0x5974E8E5, true, true, true, 0, true); }
+			if (GUI::Option("Overcast Dark", "")) { MISC::_SET_WEATHER_TYPE(0x19D4F1D9, true, true, true, 0, true); }
+			if (GUI::Option("Rain", "")) { MISC::_SET_WEATHER_TYPE(0x54A69840, true, true, true, 0, true); }
+			if (GUI::Option("Sandstorm", "")) { MISC::_SET_WEATHER_TYPE(0xB17F6111, true, true, true, 0, true); }
+			if (GUI::Option("Shower", "")) { MISC::_SET_WEATHER_TYPE(0xE72679D5, true, true, true, 0, true); }
+			if (GUI::Option("Sleet", "")) { MISC::_SET_WEATHER_TYPE(0xCA71D7C, true, true, true, 0, true); }
+			if (GUI::Option("Snow", "")) { MISC::_SET_WEATHER_TYPE(0xEFB6EFF6, true, true, true, 0, true); }
+			if (GUI::Option("Snow Clearing", "")) { MISC::_SET_WEATHER_TYPE(0x641DFC11, true, true, true, 0, true); }
+			if (GUI::Option("Snow Light", "")) { MISC::_SET_WEATHER_TYPE(0x23FB812B, true, true, true, 0, true); }
+			if (GUI::Option("Sunny", "")) { MISC::_SET_WEATHER_TYPE(0x614A1F91, true, true, true, 0, true); }
+			if (GUI::Option("Thunder", "")) { MISC::_SET_WEATHER_TYPE(0xB677829F, true, true, true, 0, true); }
+			if (GUI::Option("Thunderstorm", "")) { MISC::_SET_WEATHER_TYPE(0x7C1C4A13, true, true, true, 0, true); }
+			if (GUI::Option("White Out", "")) { MISC::_SET_WEATHER_TYPE(0x2B402288, true, true, true, 0, true); }
 		}
 		break;
 		case TimeSettingsMenu:
@@ -452,7 +452,7 @@ void Cheat::Main()
 			GUI::IntOption("Hours", &WorldTimeHour, 0, 23, 1, "");
 			GUI::IntOption("Minutes", &WorldTimeMinutes, 0, 59, 1, "");
 			GUI::IntOption("Seconds", &WorldTimeSeconds, 0, 59, 1, "");
-			if (GUI::Option("Set Time", "")) { NETWORK::NETWORK_OVERRIDE_CLOCK_TIME(WorldTimeHour, WorldTimeMinutes, WorldTimeSeconds, 0, false); }
+			if (GUI::Option("Set Time", "")) { NETWORK::_NETWORK_CLOCK_TIME_OVERRIDE(WorldTimeHour, WorldTimeMinutes, WorldTimeSeconds, 0, false); }
 		}
 		break;
 		case PedSpawnerMenu:
@@ -519,7 +519,6 @@ void Cheat::Main()
 	}
 }
 
-
 DWORD WINAPI InitThread(LPVOID lpParam)
 {
 	Cheat::CheatFunctions::CreateConsole();
@@ -529,7 +528,6 @@ DWORD WINAPI InitThread(LPVOID lpParam)
 	//Hook created - this thread is no longer needed
 	return 0;
 }
-
 
 HINSTANCE ModuleHModule;
 BOOL __stdcall DllMain(HINSTANCE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)

@@ -158,7 +158,7 @@ void Cheat::CheatFeatures::InfiniteAmmo()
 		if (WEAPON::IS_WEAPON_VALID(cur))
 		{
 			int maxAmmo;
-			if (WEAPON::GET_MAX_AMMO(PLAYER::PLAYER_PED_ID(), maxAmmo, cur))
+			if (WEAPON::GET_MAX_AMMO(PLAYER::PLAYER_PED_ID(), &maxAmmo, cur))
 			{
 				WEAPON::SET_PED_AMMO(PLAYER::PLAYER_PED_ID(), cur, maxAmmo);
 

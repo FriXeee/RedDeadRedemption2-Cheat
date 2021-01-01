@@ -28,7 +28,7 @@ void Cheat::GUI::drawText(std::string text, float font_size, float x, float y, r
 	HUD::_SET_TEXT_COLOR(rgba.r, rgba.g, rgba.b, rgba.a);
 	HUD::SET_TEXT_CENTRE(centered);
 	auto str = MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", text.c_str());
-	HUD::_DRAW_TEXT(str, x, y);
+	HUD::_DISPLAY_TEXT(str, x, y);
 }
 void Cheat::GUI::Title(const char* title) 
 {

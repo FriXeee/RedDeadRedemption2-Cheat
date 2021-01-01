@@ -6957,6 +6957,13 @@ typedef int Camera;
 typedef int TaskSequence;
 typedef int ColourIndex;
 typedef int Sphere;
+typedef int AnimScene;
+typedef int Volume;
+typedef int Prompt;
+typedef int PopZone;
+typedef int PropSet;
+typedef int ItemSet;
+typedef int PersChar;
 typedef int INT, ScrHandle;
 struct Vector3
 {

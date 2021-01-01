@@ -21,7 +21,7 @@ void Cheat::GameFunctions::GiveAllWeapons(Ped Player)
 {
 	for (auto const& i : Cheat::GameArrays::WeaponHashes)
 	{
-		WEAPON::_GIVE_WEAPON_TO_PED(Player, MISC::GET_HASH_KEY(i.c_str()), 9999, true, true, false, 0.0);
+		WEAPON::_GIVE_WEAPON_TO_PED_2(Player, MISC::GET_HASH_KEY(i.c_str()), 9999, true, true, 0, false, 0.5f, 1.0f, false, false, 0.f, 0.f);
 	}
 }
 
@@ -72,9 +72,9 @@ void Cheat::GameFunctions::RequestControlOfEnt(Entity entity)
 
 void Cheat::GameFunctions::PrintSubtitle(const char* Text)
 {
-	UILOG::_LOG_SET_CACHED_OBJECTIVE(MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", Text));
-	UILOG::_LOG_PRINT_CACHED_OBJECTIVE();
-	UILOG::_LOG_CLEAR_CACHED_OBJECTIVE();
+	UILOG::_UILOG_SET_CACHED_OBJECTIVE(MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", Text));
+	UILOG::_UILOG_PRINT_CACHED_OBJECTIVE();
+	UILOG::_UILOG_CLEAR_CACHED_OBJECTIVE();
 }
 
 
@@ -148,14 +148,14 @@ void Cheat::GameFunctions::SpawnPed(const char* ModelHash, Ped PlayerPed)
 	while (!STREAMING::HAS_MODEL_LOADED(ped)) { Cheat::GameHooking::FiberWait(0); }
 	Entity player = PlayerPed;
 	Vector3 playerCor = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, 0, 5, 0);
-	Entity spawn = PED::CREATE_PED(ped, playerCor.x, playerCor.y, playerCor.z, 0.f, false, false, false, false, true, true);
+	Entity spawn = PED::CREATE_PED(ped, playerCor.x, playerCor.y, playerCor.z, 0.f, true, false, false, false);
 	Cheat::GameFunctions::RequestControlOfEnt(spawn);
 	ENTITY::SET_ENTITY_VISIBLE(spawn, true);
 	NETWORK::NETWORK_REGISTER_ENTITY_AS_NETWORKED(spawn);
 	NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_PED(spawn), true);
 	ENTITY::SET_ENTITY_ALPHA(spawn, 255, false);
 	if (Cheat::CheatFeatures::SpawnPedDeadBool) { ENTITY::SET_ENTITY_MAX_HEALTH(spawn, 0); }
-	PED::SET_PED_VISIBLE(spawn, true);
+	PED::_SET_RANDOM_OUTFIT_VARIATION(spawn, true);
 	ENTITY::SET_ENTITY_AS_MISSION_ENTITY(spawn, 1, 1);
 	ENTITY::_SET_ENTITY_SOMETHING(spawn, true);
 	STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(ped);

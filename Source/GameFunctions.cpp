@@ -80,7 +80,7 @@ void Cheat::GameFunctions::PrintSubtitle(const char* Text)
 
 void Cheat::GameFunctions::TeleportToWaypoint()
 {
-	if (!MAP::IS_WAYPOINT_ACTIVE()) { Cheat::GameFunctions::PrintSubtitle(xorstr_("~COLOR_RED~No waypoint has been set")); return; }
+	if (!MAP::IS_WAYPOINT_ACTIVE()) { Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~No waypoint has been set"); return; }
 	
 	Vector3 coords = MAP::_GET_WAYPOINT_COORDS();
 	Entity e = PLAYER::PLAYER_PED_ID();
@@ -119,7 +119,7 @@ bool Cheat::CheatFeatures::DeleteCurrentVehicleBool = false;
 void Cheat::GameFunctions::SpawnVehicle(const char* ModelHash)
 {
 	DWORD model = MISC::GET_HASH_KEY(ModelHash);
-	if (!STREAMING::IS_MODEL_A_VEHICLE(model) || !STREAMING::IS_MODEL_IN_CDIMAGE(model)) { PrintSubtitle(xorstr_("~COLOR_RED~That is not a valid vehicle model")); return; }
+	if (!STREAMING::IS_MODEL_A_VEHICLE(model) || !STREAMING::IS_MODEL_IN_CDIMAGE(model)) { PrintSubtitle("~COLOR_RED~That is not a valid vehicle model"); return; }
 	STREAMING::REQUEST_MODEL(model, 0);
 	Vector3 pCoords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 0.0, -10.0, 0.0);
 	while (!STREAMING::HAS_MODEL_LOADED(model)) { Cheat::GameHooking::FiberWait(0); }
@@ -130,7 +130,7 @@ void Cheat::GameFunctions::SpawnVehicle(const char* ModelHash)
 	ENTITY::SET_ENTITY_VISIBLE(veh, true);
 	NETWORK::NETWORK_REGISTER_ENTITY_AS_NETWORKED(veh);
 	NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_VEH(veh), true);
-	DECORATOR::DECOR_SET_BOOL(veh, xorstr_("wagon_block_honor"), true);
+	DECORATOR::DECOR_SET_BOOL(veh, "wagon_block_honor", true);
 	ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, 0, 0);
 	ENTITY::_SET_ENTITY_SOMETHING(veh, true);
 	if (Cheat::CheatFeatures::DeleteCurrentVehicleBool) { if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), 0)) { DeleteCurrentVehicleHorse(); } }
@@ -143,7 +143,7 @@ bool Cheat::CheatFeatures::SpawnPedDeadBool = false;
 void Cheat::GameFunctions::SpawnPed(const char* ModelHash, Ped PlayerPed)
 {
 	Hash ped = MISC::GET_HASH_KEY(ModelHash);
-	if (!STREAMING::IS_MODEL_A_PED(ped)) { GameFunctions::PrintSubtitle(xorstr_("~COLOR_RED~That is not a valid Ped model")); return; }
+	if (!STREAMING::IS_MODEL_A_PED(ped)) { GameFunctions::PrintSubtitle("~COLOR_RED~That is not a valid Ped model"); return; }
 	STREAMING::REQUEST_MODEL(ped, 0);
 	while (!STREAMING::HAS_MODEL_LOADED(ped)) { Cheat::GameHooking::FiberWait(0); }
 	Entity player = PlayerPed;
@@ -187,7 +187,7 @@ void Cheat::GameFunctions::DeleteCurrentVehicleHorse()
 	}
 	else
 	{
-		Cheat::GameFunctions::PrintSubtitle(xorstr_("~COLOR_RED~You are not in a vehicle or on a horse"));
+		Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~You are not in a vehicle or on a horse");
 		return;
 	}
 }

@@ -3,17 +3,17 @@
 
 std::string Cheat::CheatFunctions::ReturnCheatBuildAsString()
 {
-	return xorstr_("1.0.0.1");
+	return "1.0.0.1";
 }
 
 const std::string Cheat::CheatFunctions::ReturnCustomTeleportsIniFilePath()
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)xorstr_("\\rdr2\\CustomTeleports.ini");
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\rdr2\\CustomTeleports.ini";
 }
 
 std::string Cheat::CheatFunctions::ReturnConfigFilePath()
 {
-	return ReturnCheatModuleDirectoryPath() + (std::string)xorstr_("\\rdr2\\config.ini");
+	return ReturnCheatModuleDirectoryPath() + (std::string)"\\rdr2\\config.ini";
 }
 
 std::string Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath()
@@ -35,12 +35,12 @@ void Cheat::CheatFunctions::CreateNewDirectory(std::string Path)
 {
 	if (!std::filesystem::create_directory(Path))
 	{
-		std::string String = xorstr_("Failed to create directory '") + Path + xorstr_("' Error: ") + Cheat::CheatFunctions::GetLastErrorAsString();
+		std::string String = "Failed to create directory '" + Path + "' Error: " + Cheat::CheatFunctions::GetLastErrorAsString();
 		Cheat::LogFunctions::DebugMessage((char*)String.c_str());
 	}
 	else
 	{
-		std::string String = xorstr_("Created directory '") + Path + xorstr_("'");
+		std::string String = "Created directory '" + Path + "'";
 		Cheat::LogFunctions::DebugMessage((char*)String.c_str());
 	}
 }
@@ -51,7 +51,7 @@ std::string Cheat::CheatFunctions::ReturnDateAndTimeAsString()
 	auto tm = *std::localtime(&t);
 
 	std::ostringstream oss;
-	oss << std::put_time(&tm, xorstr_("[%d-%m-%Y - %H:%M:%S]"));
+	oss << std::put_time(&tm, "[%d-%m-%Y - %H:%M:%S]");
 	auto str = oss.str();
 
 	return str;
@@ -60,9 +60,9 @@ std::string Cheat::CheatFunctions::ReturnDateAndTimeAsString()
 
 void Cheat::CheatFunctions::CreateConsole()
 {
-	Cheat::LogFunctions::Message(xorstr_("Allocating Console"));
+	Cheat::LogFunctions::Message("Allocating Console");
 	AllocConsole();			
-	SetConsoleTitleA(xorstr_("RDR2 Cheat Console"));
+	SetConsoleTitleA("RDR2 Cheat Console");
 
 	// Set Console Dimensions so all text is properly visible
 	HWND ConsoleWindowHandle = GetConsoleWindow();
@@ -95,17 +95,17 @@ void Cheat::CheatFunctions::CreateConsole()
 	//Redirect Std Outputs to Console
 	HANDLE ConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	int SystemOutput = _open_osfhandle(intptr_t(ConsoleOutput), _O_TEXT);
-	FILE* COutputHandle = _fdopen(SystemOutput, xorstr_("w"));
+	FILE* COutputHandle = _fdopen(SystemOutput, "w");
 	HANDLE ConsoleError = GetStdHandle(STD_ERROR_HANDLE);
 	int SystemError = _open_osfhandle(intptr_t(ConsoleError), _O_TEXT);
-	FILE* CErrorHandle = _fdopen(SystemError, xorstr_("w"));
+	FILE* CErrorHandle = _fdopen(SystemError, "w");
 	HANDLE ConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
 	int SystemInput = _open_osfhandle(intptr_t(ConsoleInput), _O_TEXT);
-	FILE* CInputHandle = _fdopen(SystemInput, xorstr_("r"));
+	FILE* CInputHandle = _fdopen(SystemInput, "r");
 	std::ios::sync_with_stdio(true);
-	freopen_s(&CInputHandle, xorstr_("CONIN$"), xorstr_("r"), stdin);
-	freopen_s(&COutputHandle, xorstr_("CONOUT$"), xorstr_("w"), stdout);
-	freopen_s(&CErrorHandle, xorstr_("CONOUT$"), xorstr_("w"), stderr);
+	freopen_s(&CInputHandle, "CONIN$", "r", stdin);
+	freopen_s(&COutputHandle, "CONOUT$", "w", stdout);
+	freopen_s(&CErrorHandle, "CONOUT$", "w", stderr);
 	std::wcout.clear();
 	std::cout.clear();
 	std::wcerr.clear();
@@ -113,7 +113,7 @@ void Cheat::CheatFunctions::CreateConsole()
 	std::wcin.clear();
 	std::cin.clear();
 
-	std::cout << xorstr_("Build: ") << Cheat::CheatFunctions::ReturnCheatBuildAsString() << std::endl;
+	std::cout << "Build: " << Cheat::CheatFunctions::ReturnCheatBuildAsString() << " | Compile Date & Time: " << __DATE__ << " " << __TIME__ << std::endl;
 }
 
 
@@ -122,7 +122,7 @@ char str2[128];
 char* Cheat::CheatFunctions::CombineTwoStrings(char* string1, char* string2)
 {
 	strcpy_s(str2, "");
-	sprintf_s(str2, xorstr_("%s %s"), string1, string2);
+	sprintf_s(str2, "%s %s", string1, string2);
 	return str2;
 }
 
@@ -140,7 +140,7 @@ std::string Cheat::CheatFunctions::ReadStringFromIni(std::string file, std::stri
 }
 void Cheat::CheatFunctions::WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key)
 {
-	WriteStringToIni(b00l ? xorstr_("true") : xorstr_("false"), file, app, key);
+	WriteStringToIni(b00l ? "true" : "false", file, app, key);
 }
 void Cheat::CheatFunctions::WriteStringToIni(std::string string, std::string file, std::string app, std::string key)
 {
@@ -150,9 +150,10 @@ void Cheat::CheatFunctions::WriteStringToIni(std::string string, std::string fil
 
 bool Cheat::CheatFunctions::IsGameWindowFocussed()
 {
-	HWND GameWindowHandle = FindWindowA(0, xorstr_("Red Dead Redemption 2"));
+	HWND GameWindowHandle = FindWindowA(0, "Red Dead Redemption 2");
 	HWND HandleProcessWithKeyboardFocus = GetForegroundWindow();
-	if (GameWindowHandle == HandleProcessWithKeyboardFocus) { return true; } else { return false; }
+	if (GameWindowHandle == HandleProcessWithKeyboardFocus) { return true; }
+	return false;
 }
 
 
@@ -170,9 +171,9 @@ void Cheat::CheatFunctions::SaveCustomTeleport(char* Name)
 	if (std::any_of(ValidationStr.begin(), ValidationStr.end(), ::isdigit)) { Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~The Custom Teleport name cannot contain any digits"); return; }
 
 	Vector3 CurrentLocalPlayerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), false, false);
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(CurrentLocalPlayerCoords.x), ReturnCustomTeleportsIniFilePath(), Name, xorstr_("x"));
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(CurrentLocalPlayerCoords.y), ReturnCustomTeleportsIniFilePath(), Name, xorstr_("y"));
-	Cheat::CheatFunctions::WriteStringToIni(std::to_string(CurrentLocalPlayerCoords.z), ReturnCustomTeleportsIniFilePath(), Name, xorstr_("z"));
+	Cheat::CheatFunctions::WriteStringToIni(std::to_string(CurrentLocalPlayerCoords.x), ReturnCustomTeleportsIniFilePath(), Name, "x");
+	Cheat::CheatFunctions::WriteStringToIni(std::to_string(CurrentLocalPlayerCoords.y), ReturnCustomTeleportsIniFilePath(), Name, "y");
+	Cheat::CheatFunctions::WriteStringToIni(std::to_string(CurrentLocalPlayerCoords.z), ReturnCustomTeleportsIniFilePath(), Name, "z");
 	Cheat::GameFunctions::PrintSubtitle("~COLOR_GREEN~Custom Teleport Location Saved");
 }
 
@@ -191,9 +192,9 @@ void Cheat::CheatFunctions::DeleteCustomTeleport(char* Name)
 
 void Cheat::CheatFunctions::DoCustomLocationTeleport(char* Name)
 {
-	std::string XCoord = Cheat::CheatFunctions::ReadStringFromIni(ReturnCustomTeleportsIniFilePath(), Name, xorstr_("x"));
-	std::string YCoord = Cheat::CheatFunctions::ReadStringFromIni(ReturnCustomTeleportsIniFilePath(), Name, xorstr_("y"));
-	std::string ZCoord = Cheat::CheatFunctions::ReadStringFromIni(ReturnCustomTeleportsIniFilePath(), Name, xorstr_("z"));
+	std::string XCoord = Cheat::CheatFunctions::ReadStringFromIni(ReturnCustomTeleportsIniFilePath(), Name, "x");
+	std::string YCoord = Cheat::CheatFunctions::ReadStringFromIni(ReturnCustomTeleportsIniFilePath(), Name, "y");
+	std::string ZCoord = Cheat::CheatFunctions::ReadStringFromIni(ReturnCustomTeleportsIniFilePath(), Name, "z");
 
 	try
 	{
@@ -242,80 +243,80 @@ std::string Cheat::CheatFunctions::GetLastErrorAsString()
 
 void Cheat::CheatFunctions::SaveConfig()
 {
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::GodmodeBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("godmode"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SuperJumpBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("superjump"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::NoRagdollBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("noragdoll"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::NeverWantedBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("neverwanted"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::WeaponDamageMultiplierBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("weapon_damage_multiplier"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::HideHUDBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("hide_hud"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::InfiniteStaminaBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("infiniteammo"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::InfiniteAmmoBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("infiniteammo"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::InvisibleBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("player_invisible"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::VehicleGodmodeBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("vehicle_godmode"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::VehicleInvisibleBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("vehicle_invisible"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::AutoSaveConfigBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("auto_save_config"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::UnlimitedDeadEyeBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("unlimited_dead_eye"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::InfiniteStaminaBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("infinite_stamina"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::IgnoredByNPCBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("ignored_by_npcs"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SuperRunBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("super_run"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::TriggerbotBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("trigger_bot"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::TriggerbotShootPlayersBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("trigger_bot_shoot_players"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SpawnVehicleInvincibleBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("spawn_vehicle_invincible"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SpawnPedInVehicleBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("spawn_in_vehicle"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::DeleteCurrentVehicleBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("delete_current_vehicle"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::TeleportGunBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("teleport_gun"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::ExplosiveAmmoBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("explosive_ammo"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SpawnPedDeadBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("ped_spawner_spawn_dead"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::AutoTeleportToWaypointBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("auto_teleport_to_waypoint"));
-	Cheat::CheatFunctions::WriteFloatToIni(Cheat::GUI::guiX, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("menu_x"));
-	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::UnlimitedHorseStaminaBool, ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("unlimited_horse_stamina"));
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::GodmodeBool, ReturnConfigFilePath().c_str(), "CHEAT", "godmode");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SuperJumpBool, ReturnConfigFilePath().c_str(), "CHEAT", "superjump");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::NoRagdollBool, ReturnConfigFilePath().c_str(), "CHEAT", "noragdoll");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::NeverWantedBool, ReturnConfigFilePath().c_str(), "CHEAT", "neverwanted");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::WeaponDamageMultiplierBool, ReturnConfigFilePath().c_str(), "CHEAT", "weapon_damage_multiplier");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::HideHUDBool, ReturnConfigFilePath().c_str(), "CHEAT", "hide_hud");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::InfiniteStaminaBool, ReturnConfigFilePath().c_str(), "CHEAT", "infiniteammo");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::InfiniteAmmoBool, ReturnConfigFilePath().c_str(), "CHEAT", "infiniteammo");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::InvisibleBool, ReturnConfigFilePath().c_str(), "CHEAT", "player_invisible");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::VehicleGodmodeBool, ReturnConfigFilePath().c_str(), "CHEAT", "vehicle_godmode");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::VehicleInvisibleBool, ReturnConfigFilePath().c_str(), "CHEAT", "vehicle_invisible");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::AutoSaveConfigBool, ReturnConfigFilePath().c_str(), "CHEAT", "auto_save_config");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::UnlimitedDeadEyeBool, ReturnConfigFilePath().c_str(), "CHEAT", "unlimited_dead_eye");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::InfiniteStaminaBool, ReturnConfigFilePath().c_str(), "CHEAT", "infinite_stamina");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::IgnoredByNPCBool, ReturnConfigFilePath().c_str(), "CHEAT", "ignored_by_npcs");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SuperRunBool, ReturnConfigFilePath().c_str(), "CHEAT", "super_run");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::TriggerbotBool, ReturnConfigFilePath().c_str(), "CHEAT", "trigger_bot");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::TriggerbotShootPlayersBool, ReturnConfigFilePath().c_str(), "CHEAT", "trigger_bot_shoot_players");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SpawnVehicleInvincibleBool, ReturnConfigFilePath().c_str(), "CHEAT", "spawn_vehicle_invincible");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SpawnPedInVehicleBool, ReturnConfigFilePath().c_str(), "CHEAT", "spawn_in_vehicle");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::DeleteCurrentVehicleBool, ReturnConfigFilePath().c_str(), "CHEAT", "delete_current_vehicle");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::TeleportGunBool, ReturnConfigFilePath().c_str(), "CHEAT", "teleport_gun");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::ExplosiveAmmoBool, ReturnConfigFilePath().c_str(), "CHEAT", "explosive_ammo");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::SpawnPedDeadBool, ReturnConfigFilePath().c_str(), "CHEAT", "ped_spawner_spawn_dead");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::AutoTeleportToWaypointBool, ReturnConfigFilePath().c_str(), "CHEAT", "auto_teleport_to_waypoint");
+	Cheat::CheatFunctions::WriteFloatToIni(Cheat::GUI::guiX, ReturnConfigFilePath().c_str(), "CHEAT", "menu_x");
+	Cheat::CheatFunctions::WriteBoolToIni(Cheat::CheatFeatures::UnlimitedHorseStaminaBool, ReturnConfigFilePath().c_str(), "CHEAT", "unlimited_horse_stamina");
 }
 
 void Cheat::CheatFunctions::LoadConfig(bool StartUp)
 {
 	if (StartUp) { Cheat::LogFunctions::Message("Loading Config"); }
 	else { Cheat::LogFunctions::Message("Reloading Config"); }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("godmode")) == xorstr_("true")) { Cheat::CheatFeatures::GodmodeBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("superjump")) == xorstr_("true")) { Cheat::CheatFeatures::SuperJumpBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("noragdoll")) == xorstr_("true")) { Cheat::CheatFeatures::NoRagdollBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("neverwanted")) == xorstr_("true")) { Cheat::CheatFeatures::NeverWantedBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("weapon_damage_multiplier")) == xorstr_("true")) { Cheat::CheatFeatures::WeaponDamageMultiplierBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("hide_hud")) == xorstr_("true")) { Cheat::CheatFeatures::HideHUDBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("unlimited_dead_eye")) == xorstr_("true")) { Cheat::CheatFeatures::UnlimitedDeadEyeBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("infinitestamina")) == xorstr_("true")) { Cheat::CheatFeatures::InfiniteStaminaBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("infiniteammo")) == xorstr_("true")) { Cheat::CheatFeatures::InfiniteAmmoBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("player_invisible")) == xorstr_("true")) { Cheat::CheatFeatures::InvisibleBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("vehicle_godmode")) == xorstr_("true")) { Cheat::CheatFeatures::VehicleGodmodeBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("vehicle_invisible")) == xorstr_("true")) { Cheat::CheatFeatures::VehicleInvisibleBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("infinite_stamina")) == xorstr_("true")) { Cheat::CheatFeatures::InfiniteStaminaBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("ignored_by_npcs")) == xorstr_("true")) { Cheat::CheatFeatures::IgnoredByNPCBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("super_run")) == xorstr_("true")) { Cheat::CheatFeatures::SuperRunBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("trigger_bot")) == xorstr_("true")) { Cheat::CheatFeatures::TriggerbotBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("trigger_bot_shoot_players")) == xorstr_("true")) { Cheat::CheatFeatures::TriggerbotShootPlayersBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("spawn_vehicle_invincible")) == xorstr_("true")) { Cheat::CheatFeatures::SpawnVehicleInvincibleBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("spawn_in_vehicle")) == xorstr_("true")) { Cheat::CheatFeatures::SpawnPedInVehicleBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("delete_current_vehicle")) == xorstr_("true")) { Cheat::CheatFeatures::DeleteCurrentVehicleBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("teleport_gun")) == xorstr_("true")) { Cheat::CheatFeatures::TeleportGunBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("explosive_ammo")) == xorstr_("true")) { Cheat::CheatFeatures::ExplosiveAmmoBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("ped_spawner_spawn_dead")) == xorstr_("true")) { Cheat::CheatFeatures::SpawnPedDeadBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("unlimited_horse_stamina")) == xorstr_("true")) { Cheat::CheatFeatures::UnlimitedHorseStaminaBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("auto_teleport_to_waypoint")) == xorstr_("true")) { Cheat::CheatFeatures::AutoTeleportToWaypointBool = true; }
-	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("auto_save_config")) == xorstr_("true")) { Cheat::CheatFeatures::AutoSaveConfigBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "godmode") == "true") { Cheat::CheatFeatures::GodmodeBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "superjump") == "true") { Cheat::CheatFeatures::SuperJumpBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "noragdoll") == "true") { Cheat::CheatFeatures::NoRagdollBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "neverwanted") == "true") { Cheat::CheatFeatures::NeverWantedBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "weapon_damage_multiplier") == "true") { Cheat::CheatFeatures::WeaponDamageMultiplierBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "hide_hud") == "true") { Cheat::CheatFeatures::HideHUDBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "unlimited_dead_eye") == "true") { Cheat::CheatFeatures::UnlimitedDeadEyeBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "infinitestamina") == "true") { Cheat::CheatFeatures::InfiniteStaminaBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "infiniteammo") == "true") { Cheat::CheatFeatures::InfiniteAmmoBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "player_invisible") == "true") { Cheat::CheatFeatures::InvisibleBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "vehicle_godmode") == "true") { Cheat::CheatFeatures::VehicleGodmodeBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "vehicle_invisible") == "true") { Cheat::CheatFeatures::VehicleInvisibleBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "infinite_stamina") == "true") { Cheat::CheatFeatures::InfiniteStaminaBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "ignored_by_npcs") == "true") { Cheat::CheatFeatures::IgnoredByNPCBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "super_run") == "true") { Cheat::CheatFeatures::SuperRunBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "trigger_bot") == "true") { Cheat::CheatFeatures::TriggerbotBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "trigger_bot_shoot_players") == "true") { Cheat::CheatFeatures::TriggerbotShootPlayersBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "spawn_vehicle_invincible") == "true") { Cheat::CheatFeatures::SpawnVehicleInvincibleBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "spawn_in_vehicle") == "true") { Cheat::CheatFeatures::SpawnPedInVehicleBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "delete_current_vehicle") == "true") { Cheat::CheatFeatures::DeleteCurrentVehicleBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "teleport_gun") == "true") { Cheat::CheatFeatures::TeleportGunBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "explosive_ammo") == "true") { Cheat::CheatFeatures::ExplosiveAmmoBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "ped_spawner_spawn_dead") == "true") { Cheat::CheatFeatures::SpawnPedDeadBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "unlimited_horse_stamina") == "true") { Cheat::CheatFeatures::UnlimitedHorseStaminaBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "auto_teleport_to_waypoint") == "true") { Cheat::CheatFeatures::AutoTeleportToWaypointBool = true; }
+	if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "auto_save_config") == "true") { Cheat::CheatFeatures::AutoSaveConfigBool = true; }
 	else { if (ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "auto_save_config") == "false") { Cheat::CheatFeatures::AutoSaveConfigBool = false; } }
-	std::string MenuXSetting = Cheat::CheatFunctions::ReadStringFromIni(ReturnConfigFilePath().c_str(), xorstr_("CHEAT"), xorstr_("menu_x")); if (MenuXSetting != "" && Cheat::CheatFunctions::IsIntegerInRange(180.00, 1100.00, std::stod(MenuXSetting))) { double MenuXDouble = std::stod(MenuXSetting); Cheat::GUI::guiX = MenuXDouble; }
+	std::string MenuXSetting = Cheat::CheatFunctions::ReadStringFromIni(ReturnConfigFilePath().c_str(), "CHEAT", "menu_x"); if (MenuXSetting != "" && Cheat::CheatFunctions::IsIntegerInRange(180.00, 1100.00, std::stod(MenuXSetting))) { double MenuXDouble = std::stod(MenuXSetting); Cheat::GUI::guiX = MenuXDouble; }
 }
 
 
 void Cheat::CheatFunctions::PostInitCheat()
 {
 	//Wait until the game is done loading
-	if (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::LogFunctions::Message(xorstr_("Waiting until the game has finished loading")); }
+	if (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::LogFunctions::Message("Waiting until the game has finished loading"); }
 	while (!PLAYER::IS_PLAYER_PLAYING(PLAYER::PLAYER_ID() || DLC::GET_IS_LOADING_SCREEN_ACTIVE())) { Cheat::GameHooking::FiberWait(0); }
 
 	//Do post init actions
 	Cheat::CheatFunctions::LoadConfig(true);
 	Cheat::GUI::MoveMenu(MainMenu);
-	Cheat::LogFunctions::Message(xorstr_("RDR2 Cheat Initialization Completed"));
+	Cheat::LogFunctions::Message("RDR2 Cheat Initialization Completed");
 }
 
 std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
@@ -339,7 +340,7 @@ std::string Cheat::CheatFunctions::VirtualKeyCodeToString(UCHAR virtualKey)
 	default:
 		result = GetKeyNameTextA(scanCode << 16, szName, 128);
 	}
-	if (result == 0) { return xorstr_("Unknown"); }
+	if (result == 0) { return "Unknown"; }
 	return szName;
 }
 

@@ -524,7 +524,7 @@ DWORD WINAPI InitThread(LPVOID lpParam)
 {
 	Cheat::CheatFunctions::CreateConsole();
 	Cheat::LogFunctions::Init();
-	if (!GetModuleHandleA(xorstr_("RDR2.exe"))) { Cheat::LogFunctions::Error(xorstr_("Invalid module")); std::exit(EXIT_SUCCESS); }
+	if (!GetModuleHandleA("RDR2.exe")) { Cheat::LogFunctions::Error("Invalid module"); std::exit(EXIT_SUCCESS); }
 	Cheat::GameHooking::Init();
 	//Hook created - this thread is no longer needed
 	return 0;
@@ -540,7 +540,7 @@ BOOL __stdcall DllMain(HINSTANCE hModule, DWORD ul_reason_for_call, LPVOID lpRes
 		DisableThreadLibraryCalls(hModule);
 		ModuleHModule = hModule;
 		//Create 'rdr2' folder
-		if (!Cheat::CheatFunctions::DoesDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)xorstr_("\\rdr2"))) { Cheat::CheatFunctions::CreateNewDirectory(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)xorstr_("\\rdr2")); }
+		if (!Cheat::CheatFunctions::DoesDirectoryExists(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\rdr2")) { Cheat::CheatFunctions::CreateNewDirectory(Cheat::CheatFunctions::ReturnCheatModuleDirectoryPath() + (std::string)"\\rdr2"); }
 		//Continue cheat loading
 		CreateThread(NULL, NULL, InitThread, hModule, NULL, NULL);
 		break;

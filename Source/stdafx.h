@@ -22,9 +22,6 @@
 #pragma comment(lib, "winmm.lib")
 
 
-//XORSTR
-#include "ThirdParty/XORSTR/xorstr.hpp"
-
 //MinHook
 #include "ThirdParty/MinHook/MinHook.h"
 #pragma comment(lib, "ThirdParty/MinHook/libMinHook-x64-v141-md.lib")

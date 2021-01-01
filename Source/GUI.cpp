@@ -27,7 +27,7 @@ void Cheat::GUI::drawText(std::string text, float font_size, float x, float y, r
 	HUD::SET_TEXT_SCALE(font_size, font_size);
 	HUD::_SET_TEXT_COLOR(rgba.r, rgba.g, rgba.b, rgba.a);
 	HUD::SET_TEXT_CENTRE(centered);
-	auto str = MISC::_CREATE_VAR_STRING(10, xorstr_("LITERAL_STRING"), text.c_str());
+	auto str = MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", text.c_str());
 	HUD::_DRAW_TEXT(str, x, y);
 }
 void Cheat::GUI::Title(const char* title) 
@@ -84,11 +84,11 @@ bool Cheat::GUI::BoolOption(const char* option, bool* isEnabled, const char* Inf
 	Option(option, InformationText);
 
 	if (Cheat::GUI::currentOption <= GUI::maxVisOptions && Cheat::GUI::optionCount <= GUI::maxVisOptions) {
-		drawText(*isEnabled ? xorstr_("~COLOR_GREEN~On") : xorstr_("~COLOR_RED~Off"), 45.f, guiX + 135.f, ((Cheat::GUI::optionCount * 30.f) + 36.5f), optionRGB);
+		drawText(*isEnabled ? "~COLOR_GREEN~On" : "~COLOR_RED~Off", 45.f, guiX + 135.f, ((Cheat::GUI::optionCount * 30.f) + 36.5f), optionRGB);
 	}
 	else if ((Cheat::GUI::optionCount > (Cheat::GUI::currentOption - 16)) && Cheat::GUI::optionCount <= Cheat::GUI::currentOption)
 	{
-		drawText(*isEnabled ? xorstr_("~COLOR_GREEN~On") : xorstr_("~COLOR_RED~Off"), 45.f, guiX + 135.f, ((Cheat::GUI::optionCount * 30.f) + 36.5f), optionRGB);
+		drawText(*isEnabled ? "~COLOR_GREEN~On" : "~COLOR_RED~Off", 45.f, guiX + 135.f, ((Cheat::GUI::optionCount * 30.f) + 36.5f), optionRGB);
 	}
 
 	if (Cheat::GUI::OptionSelect && Cheat::GUI::currentOption == Cheat::GUI::optionCount) {
@@ -137,7 +137,7 @@ bool Cheat::GUI::FloatOption(const char* option, float* var, float min, float ma
 	Option(option, InformationText);
 
 	char buf[100];
-	_snprintf_s(buf, sizeof(buf), xorstr_("%.2f"), *var);
+	_snprintf_s(buf, sizeof(buf), "%.2f"), *var;
 
 	if (Cheat::GUI::currentOption <= GUI::maxVisOptions && Cheat::GUI::optionCount <= GUI::maxVisOptions) {
 		drawText("<" + (std::string)buf + ">", 45.f, guiX + 85.f, (Cheat::GUI::optionCount * 30.f) + 37.f, optionRGB);
@@ -179,7 +179,7 @@ void Cheat::GUI::End()
 			drawRect(guiX, 30.22f * Cheat::GUI::optionCount + 62.f, 350.f, 1.f, { 0, 0, 255, 255 });  //Menu bottom line
 			drawRect(guiX, 30.22f * Cheat::GUI::optionCount + 77.5f, 350.f, 30.f, { 0, 0, 0, 255 });  //Menu bottom draw
 			drawText(Cheat::CheatFunctions::ReturnCheatBuildAsString(), 40.f, guiX + 115.f, 30.22f * Cheat::GUI::optionCount + 67.f, { 255, 255, 255, 255 }, false); //Cheat build number draw
-			drawText(std::to_string(Cheat::GUI::currentOption) + xorstr_(" / ") + std::to_string(Cheat::GUI::optionCount), 40.f, guiX - 170.f, 30.22f * Cheat::GUI::optionCount + 67.f, { 255, 255, 255, 255 }, false); //Option count draw at menu bottom
+			drawText(std::to_string(Cheat::GUI::currentOption) + " / " + std::to_string(Cheat::GUI::optionCount), 40.f, guiX - 170.f, 30.22f * Cheat::GUI::optionCount + 67.f, { 255, 255, 255, 255 }, false); //Option count draw at menu bottom
 			if (InformationTextVar != "")
 			{
 				drawRect(guiX, 30.22f * Cheat::GUI::optionCount + 103.f, 350.f, 25.f, { 0, 0, 0, 255 });
@@ -191,7 +191,7 @@ void Cheat::GUI::End()
 			drawRect(guiX, 30.22f * GUI::maxVisOptions + 62.f, 350.f, 1.f, { 0, 0, 255, 255 });   //Menu bottom line
 			drawRect(guiX, 30.22f * GUI::maxVisOptions + 77.5f, 350.f, 30.f, { 0, 0, 0, 255 });   //Menu bottom draw
 			drawText(Cheat::CheatFunctions::ReturnCheatBuildAsString(), 40.f, guiX + 115.f, 30.22f * GUI::maxVisOptions + 67.f, { 255, 255, 255, 255 }, false); //Cheat build number draw
-			drawText(std::to_string(Cheat::GUI::currentOption) + xorstr_(" / ") + std::to_string(Cheat::GUI::optionCount), 40.f, guiX - 170.f, 30.22f * GUI::maxVisOptions + 67.f, { 255, 255, 255, 255 }, false); //Option count draw at menu bottom
+			drawText(std::to_string(Cheat::GUI::currentOption) + " / " + std::to_string(Cheat::GUI::optionCount), 40.f, guiX - 170.f, 30.22f * GUI::maxVisOptions + 67.f, { 255, 255, 255, 255 }, false); //Option count draw at menu bottom
 			if (InformationTextVar != "")
 			{
 				drawRect(guiX, 30.22f * GUI::maxVisOptions + 103.f, 350.f, 25.f, { 0, 0, 0, 255 });

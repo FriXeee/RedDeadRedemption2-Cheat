@@ -234,6 +234,7 @@ void Cheat::CheatFeatures::AutoTeleportToWaypoint()
 	if (MAP::IS_WAYPOINT_ACTIVE() && !HUD::IS_PAUSE_MENU_ACTIVE()) 
 	{ 
 		Cheat::GameFunctions::TeleportToWaypoint();
+		MAP::SET_WAYPOINT_OFF();
 	}
 }
 

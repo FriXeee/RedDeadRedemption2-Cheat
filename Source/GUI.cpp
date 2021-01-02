@@ -6,7 +6,7 @@ rgba titleRGB						= { 255, 255, 255, 255 };
 rgba optionRectRGB					= { 255, 0, 0, 200 };
 rgba optionRGB						= { 255, 255, 255, 255 };
 rgba scrollerRGB					= { 0, 0, 255, 255 };
-const char* InformationTextVar;
+std::string InformationTextVar;
 
 void drawRect(float x, float y, float w, float h, rgba rgba) 
 {
@@ -30,13 +30,13 @@ void Cheat::GUI::drawText(std::string text, float font_size, float x, float y, r
 	auto str = MISC::_CREATE_VAR_STRING(10, "LITERAL_STRING", text.c_str());
 	HUD::_DISPLAY_TEXT(str, x, y);
 }
-void Cheat::GUI::Title(const char* title) 
+void Cheat::GUI::Title(std::string title)
 {
 	drawRect(guiX, 42.f, 350.f, 40.f, { 0, 0, 255, 255 });
 	drawText(title, 73.f, guiX, 22.f, titleRGB, true);
 
 }
-bool Cheat::GUI::Option(const char* option, const char* InformationText) 
+bool Cheat::GUI::Option(std::string option, std::string InformationText)
 {
 	Cheat::GUI::optionCount++;
 
@@ -67,7 +67,7 @@ bool Cheat::GUI::Option(const char* option, const char* InformationText)
 	}
 	else return false;
 }
-bool Cheat::GUI::MenuOption(const char* option, SubMenus menu) 
+bool Cheat::GUI::MenuOption(std::string option, SubMenus menu)
 {
 	Option(option, "");
 
@@ -79,7 +79,7 @@ bool Cheat::GUI::MenuOption(const char* option, SubMenus menu)
 	}
 	else return false;
 }
-bool Cheat::GUI::BoolOption(const char* option, bool* isEnabled, const char* InformationText) 
+bool Cheat::GUI::BoolOption(std::string option, bool* isEnabled, std::string InformationText)
 {
 	Option(option, InformationText);
 
@@ -97,7 +97,7 @@ bool Cheat::GUI::BoolOption(const char* option, bool* isEnabled, const char* Inf
 	}
 	return false;
 }
-bool Cheat::GUI::IntOption(const char* option, int* var, int min, int max, int step, const char* InformationText) 
+bool Cheat::GUI::IntOption(std::string option, int* var, int min, int max, int step, std::string InformationText)
 {
 	Option(option, InformationText);
 
@@ -132,7 +132,7 @@ bool Cheat::GUI::IntOption(const char* option, int* var, int min, int max, int s
 	}
 	else return false;
 }
-bool Cheat::GUI::FloatOption(const char* option, float* var, float min, float max, float step, const char* InformationText) 
+bool Cheat::GUI::FloatOption(std::string option, float* var, float min, float max, float step, std::string InformationText)
 {
 	Option(option, InformationText);
 
@@ -259,13 +259,13 @@ void Cheat::GUI::ControlsLoop()
 			AUDIO::PLAY_SOUND_FRONTEND("SELECT", "HUD_SHOP_SOUNDSET", true, 0);
 			if (GUI::menuLevel == 0)
 			{
-				if (GUI::PreviousMenu != NOMENU && Cheat::GUI::RestorePreviousSubmenu) 
+				if (GUI::PreviousMenu != NOMENU && Cheat::GUI::RestorePreviousSubmenu)
 				{ 
 					GUI::MoveMenu(GUI::PreviousMenu); GUI::menuLevel = GUI::PreviousMenuLevel; GUI::currentOption = GUI::previousOption; 
 				}
 				else 
 				{ 
-					GUI::MoveMenu(SubMenus::MainMenu); 
+					GUI::MoveMenu(MainMenu); 
 				}
 			}
 			else

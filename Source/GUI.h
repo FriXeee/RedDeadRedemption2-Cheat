@@ -7,6 +7,7 @@ enum SubMenus
 	SelfMenu,
 	NetworkingOptionsMenu,
 	VehicleOptionsMenu,
+	HorseOptionsMenu,
 	WeaponOptionsMenu,
 	TeleportOptionsMenu,
 	WorldOptionsMenu,

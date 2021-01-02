@@ -1,16 +1,10 @@
 #include "stdafx.h"
 
-bool Cheat::CheatFeatures::AutoSaveConfigBool = true;
 bool Cheat::CheatFeatures::TriggerbotShootPlayersBool = false;
 int Cheat::CheatFeatures::SelectedPlayer;
 
-double AutoSaveConfig_startTime = GetTickCount64();
 void Cheat::CheatFeatures::Loop()
 {
-	//Auto Save Config - every 10 minutes
-	double AutoSaveConfig_currentTime = GetTickCount64() - AutoSaveConfig_startTime;
-	if (AutoSaveConfig_currentTime >= 600000) { if (AutoSaveConfigBool) { Cheat::CheatFunctions::SaveConfig(); } AutoSaveConfig_startTime = GetTickCount64(); }
-
 	//Features
 	GodmodeBool ? Godmode(true) : Godmode(false);
 	SuperJumpBool ? SuperJump() : NULL;
@@ -33,6 +27,8 @@ void Cheat::CheatFeatures::Loop()
 	ExplosiveAmmoBool ? ExplosiveAmmo() : NULL;
 	VehicleGodmodeBool ? VehicleGodmode(true) : VehicleGodmode(false);
 	VehicleInvisibleBool ? VehicleInvisible(true) : VehicleInvisible(false);
+	HorseGodmodeBool ? HorseGodmode(true) : HorseGodmode(false);
+	HorseInvisibleBool ? HorseInvisible(true) : HorseInvisible(false);
 	UnlimitedHorseStaminaBool ? UnlimitedHorseStamina() : NULL;
 }
 
@@ -41,13 +37,13 @@ void Cheat::CheatFeatures::Loop()
 bool Cheat::CheatFeatures::GodmodeBool = false;
 void Cheat::CheatFeatures::Godmode(bool toggle)
 {
-	ENTITY::SET_ENTITY_INVINCIBLE(PLAYER::PLAYER_PED_ID(), toggle);
+	ENTITY::SET_ENTITY_INVINCIBLE(Cheat::GameFunctions::PlayerPedID, toggle);
 }
 
 bool Cheat::CheatFeatures::SuperJumpBool = false;
 void Cheat::CheatFeatures::SuperJump()
 {
-	MISC::SET_SUPER_JUMP_THIS_FRAME(PLAYER::PLAYER_ID());
+	MISC::SET_SUPER_JUMP_THIS_FRAME(Cheat::GameFunctions::PlayerID);
 }
 
 
@@ -56,22 +52,22 @@ void Cheat::CheatFeatures::NoRagdoll(bool toggle)
 {
 	if (toggle)
 	{
-		PED::SET_PED_CAN_RAGDOLL(PLAYER::PLAYER_PED_ID(), false); 
-		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(PLAYER::PLAYER_PED_ID(), false); 
-		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(PLAYER::PLAYER_PED_ID(), false);
+		PED::SET_PED_CAN_RAGDOLL(Cheat::GameFunctions::PlayerPedID, false);
+		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(Cheat::GameFunctions::PlayerPedID, false);
+		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(Cheat::GameFunctions::PlayerPedID, false);
 	}
 	else
 	{
-		PED::SET_PED_CAN_RAGDOLL(PLAYER::PLAYER_PED_ID(), true);
-		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(PLAYER::PLAYER_PED_ID(), true);
-		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(PLAYER::PLAYER_PED_ID(), true);
+		PED::SET_PED_CAN_RAGDOLL(Cheat::GameFunctions::PlayerPedID, true);
+		PED::SET_PED_CAN_RAGDOLL_FROM_PLAYER_IMPACT(Cheat::GameFunctions::PlayerPedID, true);
+		PED::SET_PED_CAN_BE_KNOCKED_OFF_VEHICLE(Cheat::GameFunctions::PlayerPedID, true);
 	}
 }
 
 bool Cheat::CheatFeatures::IgnoredByNPCBool = false;
 void Cheat::CheatFeatures::IgnoredByNPC(bool toggle)
 {
-	PLAYER::SET_EVERYONE_IGNORE_PLAYER(PLAYER::PLAYER_ID(), toggle);
+	PLAYER::SET_EVERYONE_IGNORE_PLAYER(Cheat::GameFunctions::PlayerID, toggle);
 }
 
 
@@ -79,13 +75,13 @@ bool Cheat::CheatFeatures::TriggerbotBool = false;
 void Cheat::CheatFeatures::Triggerbot()
 {
 	Entity AimingEntity; 
-	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(PLAYER::PLAYER_ID(), &AimingEntity)) 
+	if (PLAYER::GET_ENTITY_PLAYER_IS_FREE_AIMING_AT(Cheat::GameFunctions::PlayerID, &AimingEntity))
 	{ 
 		if (TriggerbotShootPlayersBool) 
 		{ 
-			if (!PED::IS_PED_RELOADING(PLAYER::PLAYER_PED_ID()) && ENTITY::IS_ENTITY_A_PED(AimingEntity) && !ENTITY::IS_ENTITY_DEAD(AimingEntity)) 
+			if (!PED::IS_PED_RELOADING(Cheat::GameFunctions::PlayerPedID) && ENTITY::IS_ENTITY_A_PED(AimingEntity) && !ENTITY::IS_ENTITY_DEAD(AimingEntity))
 			{ 
-				TASK::TASK_SHOOT_AT_ENTITY(PLAYER::PLAYER_PED_ID(), AimingEntity, -1, -957453492, 1); 
+				TASK::TASK_SHOOT_AT_ENTITY(Cheat::GameFunctions::PlayerPedID, AimingEntity, -1, -957453492, 1);
 			} 
 		} 
 		else 
@@ -123,7 +119,7 @@ void Cheat::CheatFeatures::NeverWanted(bool toggle)
 bool Cheat::CheatFeatures::UnlimitedDeadEyeBool = false;
 void Cheat::CheatFeatures::UnlimitedDeadEye()
 {
-	PLAYER::RESTORE_SPECIAL_ABILITY(PLAYER::PLAYER_ID(), -1, false);
+	PLAYER::RESTORE_SPECIAL_ABILITY(Cheat::GameFunctions::PlayerID, -1, false);
 }
 
 bool Cheat::CheatFeatures::InvisibleBool = false;
@@ -144,7 +140,7 @@ void Cheat::CheatFeatures::Invisible(bool toggle)
 bool Cheat::CheatFeatures::InfiniteStaminaBool = false;
 void Cheat::CheatFeatures::InfiniteStamina()
 {
-	PLAYER::RESTORE_PLAYER_STAMINA(PLAYER::PLAYER_ID(), 100.0f);
+	PLAYER::RESTORE_PLAYER_STAMINA(Cheat::GameFunctions::PlayerID, 100.0f);
 }
 
 
@@ -177,7 +173,7 @@ void Cheat::CheatFeatures::NoClip()
 {
 	NoClipWasEnabled = true;
 	float x, y, z;
-	float d = 0.049999;
+	float d = 0.049999f;
 
 	Cheat::GameFunctions::GetCameraDirection(&x, &y, &z);
 
@@ -194,7 +190,7 @@ void Cheat::CheatFeatures::NoClip()
 	{
 		int entity;
 		if (PED::IS_PED_ON_MOUNT(PLAYER::PLAYER_PED_ID())) { entity = PED::GET_MOUNT(PLAYER::PLAYER_PED_ID()); }
-		else { entity = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), PLAYER::PLAYER_ID()); }
+		else { entity = PED::GET_VEHICLE_PED_IS_IN(PLAYER::PLAYER_PED_ID(), false); }
 
 		Vector3 Pos = ENTITY::GET_ENTITY_COORDS(entity, false, false);
 		Vector3 rotation = CAM::GET_GAMEPLAY_CAM_ROT(0);
@@ -345,6 +341,44 @@ void Cheat::CheatFeatures::VehicleInvisible(bool toggle)
 		ENTITY::SET_ENTITY_VISIBLE(PED::GET_MOUNT(PLAYER::PLAYER_PED_ID()), true);
 	}
 }
+
+
+bool Cheat::CheatFeatures::HorseGodmodeBool = false;
+void Cheat::CheatFeatures::HorseGodmode(bool toggle)
+{
+	if (toggle)
+	{
+		Ped Horse = PED::GET_MOUNT(GameFunctions::PlayerPedID);
+		ENTITY::SET_ENTITY_INVINCIBLE(Horse, true);
+		ENTITY::SET_ENTITY_PROOFS(Horse, 0, false);
+		VEHICLE::SET_VEHICLE_TYRES_CAN_BURST(Horse, false);
+		VEHICLE::SET_VEHICLE_WHEELS_CAN_BREAK(Horse, false);
+		VEHICLE::SET_VEHICLE_CAN_BE_VISIBLY_DAMAGED(Horse, false);
+		ENTITY::SET_ENTITY_INVINCIBLE(Horse, true);
+	}
+	else
+	{
+		Ped Horse = PED::GET_MOUNT(GameFunctions::PlayerPedID);
+		ENTITY::SET_ENTITY_INVINCIBLE(Horse, false);
+		ENTITY::SET_ENTITY_PROOFS(Horse, 0, false);
+		VEHICLE::SET_VEHICLE_CAN_BE_VISIBLY_DAMAGED(Horse, true);
+		ENTITY::SET_ENTITY_INVINCIBLE(Horse, false);
+	}
+}
+
+bool Cheat::CheatFeatures::HorseInvisibleBool = false;
+void Cheat::CheatFeatures::HorseInvisible(bool toggle)
+{
+	if (toggle)
+	{
+		ENTITY::SET_ENTITY_VISIBLE(PED::GET_MOUNT(GameFunctions::PlayerPedID), false);
+	}
+	else
+	{
+		ENTITY::SET_ENTITY_VISIBLE(PED::GET_MOUNT(GameFunctions::PlayerPedID), true);
+	}
+}
+
 
 
 bool Cheat::CheatFeatures::UnlimitedHorseStaminaBool = false;

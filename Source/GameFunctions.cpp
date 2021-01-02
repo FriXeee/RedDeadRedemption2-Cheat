@@ -23,28 +23,67 @@ void Cheat::GameFunctions::GiveAllWeapons(Ped Player)
 	}
 }
 
-Vector3 TPCoords;
-void Cheat::GameFunctions::TPto(Vector3 Coords)
+/*
+Description: Teleport target entity to target coords
+Note(s): If AutoCorrectGroundHeight is set, the function automatically searches for nearby ground
+		 If IgnoreCurrentPedVehicle is set, the vehicle a entity may be in will be ignored and only the ped will be teleported
+*/
+void Cheat::GameFunctions::TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicleOrHorse)
 {
-	int Handle = PLAYER::PLAYER_PED_ID();
-	if (PED::IS_PED_IN_ANY_VEHICLE(Handle, 0))
+	Entity TargetEntity = e;
+
+	if (ENTITY::IS_ENTITY_A_PED(TargetEntity))
 	{
-		ENTITY::SET_ENTITY_COORDS(PED::GET_VEHICLE_PED_IS_IN(Handle, false), Coords.x, Coords.y, Coords.z, 0, 0, 0, 1);
+		if (PED::IS_PED_IN_ANY_VEHICLE(TargetEntity, false) && !IgnoreCurrentPedVehicleOrHorse)
+		{
+			TargetEntity = PED::GET_VEHICLE_PED_IS_USING(TargetEntity);
+		}
+		else if (PED::IS_PED_ON_MOUNT(TargetEntity))
+		{
+			TargetEntity = PED::GET_MOUNT(TargetEntity);
+		}
 	}
-	else  
+	if (ENTITY::IS_ENTITY_A_VEHICLE(TargetEntity) || ENTITY::IS_ENTITY_A_PED(TargetEntity))
 	{
-		if (PED::IS_PED_ON_MOUNT(Handle)) 
+		Cheat::GameFunctions::RequestNetworkControlOfEntity(TargetEntity);
+	}
+
+	if (!AutoCorrectGroundHeight)
+	{
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
+	}
+	else
+	{
+		bool groundFound = false;
+		static std::array<float, 21> groundCheckHeight = { 0.0, 50.0, 100.0, 150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.00 };
+
+		for (const float& CurrentHeight : groundCheckHeight)
 		{
-			ENTITY::SET_ENTITY_COORDS(PED::GET_MOUNT(Handle), Coords.x, Coords.y, Coords.z, 0, 0, 0, 1);
+			ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, CurrentHeight, false, false, true);
+			GameHooking::FiberWait(50);
+			if (MISC::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, CurrentHeight, &coords.z, false))
+			{
+				groundFound = true;
+				coords.z += 3.0;
+				break;
+			}
 		}
-		else
+
+		if (!groundFound)
 		{
-			ENTITY::SET_ENTITY_COORDS(Handle, Coords.x, Coords.y, Coords.z, 0, 0, 0, 1);
+			Vector3 ClosestRoadCoord;
+			if (PATHFIND::GET_CLOSEST_ROAD(coords.x, coords.y, coords.z, 1.f, 1,
+				&ClosestRoadCoord, &ClosestRoadCoord, NULL, NULL, NULL, 0))
+			{
+				coords = ClosestRoadCoord;
+			}
+			GameFunctions::PrintSubtitle("Ground not found; teleported to nearby road");
 		}
+		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(TargetEntity, coords.x, coords.y, coords.z, false, false, true);
 	}
 }
 
-void Cheat::GameFunctions::RequestControlOfEntity(Entity entity)
+void Cheat::GameFunctions::RequestNetworkControlOfEntity(Entity entity)
 {
 	int EntityTick = 0;
 	while (!NETWORK::NETWORK_HAS_CONTROL_OF_ENTITY(entity) && EntityTick <= 25)
@@ -73,36 +112,12 @@ void Cheat::GameFunctions::PrintSubtitle(std::string Text)
 
 void Cheat::GameFunctions::TeleportToWaypoint()
 {
-	if (!MAP::IS_WAYPOINT_ACTIVE()) { Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~No waypoint has been set"); return; }
-	
-	Vector3 coords = MAP::_GET_WAYPOINT_COORDS();
-	Entity e = PLAYER::PLAYER_PED_ID();
-	if (PED::IS_PED_IN_ANY_VEHICLE(e, 0))
-	{
-		e = PED::GET_VEHICLE_PED_IS_USING(e);
+	if (MAP::IS_WAYPOINT_ACTIVE()) 
+	{ 
+		Cheat::GameFunctions::TeleportToCoords(PlayerPedID, MAP::_GET_WAYPOINT_COORDS(), true, false);
+		return;
 	}
-	else if (PED::IS_PED_ON_MOUNT(e))
-	{
-		e = PED::GET_MOUNT(e);
-	}
-
-	bool groundFound = false;
-	static float groundCheckHeight[] = { 50.0, 100.0, 150.0, 50.0, 0.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0, 650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0 };
-	for (int i = 0; i < sizeof(groundCheckHeight) / sizeof(float); i++)
-	{
-		ENTITY::SET_ENTITY_COORDS_NO_OFFSET(e, coords.x, coords.y, groundCheckHeight[i], 0, 0, 1);
-		Cheat::GameHooking::FiberWait(100);
-		if (MISC::GET_GROUND_Z_FOR_3D_COORD(coords.x, coords.y, groundCheckHeight[i], &coords.z, 0))
-		{
-			groundFound = true;
-			coords.z += 3.0;
-			break;
-		}
-	}
-
-	if (!groundFound) { coords.z = 1000.0; }
-
-	Cheat::GameFunctions::TPto(coords);
+	Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~No waypoint has been set");
 }
 
 bool Cheat::CheatFeatures::SpawnVehicleInvincibleBool = false;
@@ -113,11 +128,11 @@ void Cheat::GameFunctions::SpawnVehicle(const char* ModelHash)
 	DWORD model = MISC::GET_HASH_KEY(ModelHash);
 	if (!STREAMING::IS_MODEL_A_VEHICLE(model) || !STREAMING::IS_MODEL_IN_CDIMAGE(model)) { PrintSubtitle("~COLOR_RED~That is not a valid vehicle model"); return; }
 	STREAMING::REQUEST_MODEL(model, 0);
-	Vector3 pCoords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(PLAYER::PLAYER_PED_ID(), 0.0, -10.0, 0.0);
+	Vector3 pCoords = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(Cheat::GameFunctions::PlayerPedID, 0.0, -10.0, 0.0);
 	while (!STREAMING::HAS_MODEL_LOADED(model)) { Cheat::GameHooking::FiberWait(0); }
-	Vector3 coords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), 1, 0);
+	Vector3 coords = ENTITY::GET_ENTITY_COORDS(Cheat::GameFunctions::PlayerPedID, 1, 0);
 	int veh = VEHICLE::CREATE_VEHICLE(model, coords.x, coords.y, coords.z, 0, 0, 0, 0, 1);
-	Cheat::GameFunctions::RequestControlOfEntity(veh);
+	Cheat::GameFunctions::RequestNetworkControlOfEntity(veh);
 	VEHICLE::SET_VEHICLE_ON_GROUND_PROPERLY(veh, 0);
 	ENTITY::SET_ENTITY_VISIBLE(veh, true);
 	NETWORK::NETWORK_REGISTER_ENTITY_AS_NETWORKED(veh);
@@ -125,9 +140,9 @@ void Cheat::GameFunctions::SpawnVehicle(const char* ModelHash)
 	DECORATOR::DECOR_SET_BOOL(veh, "wagon_block_honor", true);
 	ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, 0, 0);
 	ENTITY::_SET_ENTITY_SOMETHING(veh, true);
-	if (Cheat::CheatFeatures::DeleteCurrentVehicleBool) { if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), 0)) { DeleteCurrentVehicleHorse(); } }
+	if (Cheat::CheatFeatures::DeleteCurrentVehicleBool) { if (PED::IS_PED_IN_ANY_VEHICLE(Cheat::GameFunctions::PlayerPedID, 0)) { DeleteCurrentVehicle(); } }
 	if (Cheat::CheatFeatures::SpawnVehicleInvincibleBool) { ENTITY::SET_ENTITY_INVINCIBLE(veh, true); }
-	if (Cheat::CheatFeatures::SpawnPedInVehicleBool) { PED::SET_PED_INTO_VEHICLE(PLAYER::PLAYER_PED_ID(), veh, -1); }
+	if (Cheat::CheatFeatures::SpawnPedInVehicleBool) { PED::SET_PED_INTO_VEHICLE(Cheat::GameFunctions::PlayerPedID, veh, -1); }
 	STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(model);  
 }
 
@@ -141,7 +156,7 @@ void Cheat::GameFunctions::SpawnPed(const char* ModelHash, Ped PlayerPed)
 	Entity player = PlayerPed;
 	Vector3 playerCor = ENTITY::GET_OFFSET_FROM_ENTITY_IN_WORLD_COORDS(player, 0, 5, 0);
 	Entity spawn = PED::CREATE_PED(ped, playerCor.x, playerCor.y, playerCor.z, 0.f, true, false, false, false);
-	Cheat::GameFunctions::RequestControlOfEntity(spawn);
+	Cheat::GameFunctions::RequestNetworkControlOfEntity(spawn);
 	ENTITY::SET_ENTITY_VISIBLE(spawn, true);
 	NETWORK::NETWORK_REGISTER_ENTITY_AS_NETWORKED(spawn);
 	NETWORK::SET_NETWORK_ID_EXISTS_ON_ALL_MACHINES(NETWORK::NET_TO_PED(spawn), true);
@@ -153,30 +168,39 @@ void Cheat::GameFunctions::SpawnPed(const char* ModelHash, Ped PlayerPed)
 	STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(ped);
 }
 
-void Cheat::GameFunctions::DeleteCurrentVehicleHorse()
+
+/*
+Description: Delete the vehicle the local player is using
+Note(s): None
+*/
+void Cheat::GameFunctions::DeleteCurrentVehicle()
 {
-	if (PED::IS_PED_IN_ANY_VEHICLE(PLAYER::PLAYER_PED_ID(), false)) 
+	if (PED::IS_PED_IN_ANY_VEHICLE(PlayerPedID, false))
 	{
-		Vehicle veh = PED::GET_VEHICLE_PED_IS_USING(PLAYER::PLAYER_PED_ID());
-		if (ENTITY::DOES_ENTITY_EXIST(veh))
+		Vehicle VehicleHandle = PED::GET_VEHICLE_PED_IS_USING(PlayerPedID);
+		if (ENTITY::DOES_ENTITY_EXIST(VehicleHandle))
 		{
-			RequestControlOfEntity(veh);
-			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(veh, true, true);
-			VEHICLE::DELETE_VEHICLE(&veh);
+			RequestNetworkControlOfEntity(VehicleHandle);
+			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(VehicleHandle, true, true);
+			VEHICLE::DELETE_VEHICLE(&VehicleHandle);
+			return;
 		}
 	}
-	else if (PED::IS_PED_ON_MOUNT(PLAYER::PLAYER_PED_ID())) 
+	Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~You are not in a vehicle");
+}
+
+void Cheat::GameFunctions::DeleteCurrentMount()
+{
+	if (PED::IS_PED_ON_MOUNT(PlayerPedID))
 	{
-		Ped Horse = PED::GET_MOUNT(PLAYER::PLAYER_PED_ID());
-		if (ENTITY::DOES_ENTITY_EXIST(Horse))
+		Entity MountHandle = PED::GET_MOUNT(PlayerPedID);
+		if (ENTITY::DOES_ENTITY_EXIST(MountHandle))
 		{
-			RequestControlOfEntity(Horse);
-			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(Horse, true, true);
-			ENTITY::DELETE_ENTITY(&Horse);
+			RequestNetworkControlOfEntity(MountHandle);
+			ENTITY::SET_ENTITY_AS_MISSION_ENTITY(MountHandle, true, true);
+			ENTITY::DELETE_ENTITY(&MountHandle);
+			return;
 		}
 	}
-	else
-	{
-		Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~You are not in a vehicle or on a horse");
-	}
+	Cheat::GameFunctions::PrintSubtitle("~COLOR_RED~You are not on a horse");
 }

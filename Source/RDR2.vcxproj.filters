@@ -19,11 +19,11 @@
     <ClCompile Include="GameArrays.cpp">
       <Filter>Source Files\Game Functions</Filter>
     </ClCompile>
-    <ClCompile Include="Features.cpp">
-      <Filter>Source Files\Game Functions</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CheatFeatures.cpp">
+      <Filter>Source Files\Game Functions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

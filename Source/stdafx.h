@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <algorithm>
 #include <psapi.h>
+#include <array>
 #pragma comment(lib, "winmm.lib")
 
 
@@ -51,10 +52,8 @@ namespace Cheat
 		char* CombineTwoStrings(char* string1, char* string2);
 		std::string ReadStringFromIni(std::string file, std::string app, std::string key);
 		bool IsGameWindowFocussed();
-		void LoadConfig(bool StartUp);
 		void WriteBoolToIni(bool b00l, std::string file, std::string app, std::string key);
 		void WriteStringToIni(std::string string, std::string file, std::string app, std::string key);
-		void SaveConfig();
 		void WriteFloatToIni(float floatValue, std::string file, std::string app, std::string key);
 		void SaveCustomTeleport(char* Name);
 		void DeleteCustomTeleport(char* Name);
@@ -67,7 +66,6 @@ namespace Cheat
 	}
 	namespace CheatFeatures
 	{
-		extern bool AutoSaveConfigBool;
 		extern bool TriggerbotShootPlayersBool;
 		extern int SelectedPlayer;
 		extern bool SpawnVehicleInvincibleBool;
@@ -117,8 +115,12 @@ namespace Cheat
 		extern void ExplosiveAmmo();
 		extern bool VehicleGodmodeBool;
 		extern void VehicleGodmode(bool toggle);
+		extern bool HorseGodmodeBool;
+		extern void HorseGodmode(bool toggle);
 		extern bool VehicleInvisibleBool;
 		extern void VehicleInvisible(bool toggle);	
+		extern bool HorseInvisibleBool;
+		extern void HorseInvisible(bool toggle);
 		extern bool UnlimitedHorseStaminaBool;
 		extern void UnlimitedHorseStamina();
 	}
@@ -127,13 +129,14 @@ namespace Cheat
 		extern Player PlayerID;
 		extern Ped PlayerPedID;
 		void GiveAllWeapons(Ped Player);
-		void TPto(Vector3 Coords);
-		void RequestControlOfEntity(Entity entity);
+		void TeleportToCoords(Entity e, Vector3 coords, bool AutoCorrectGroundHeight, bool IgnoreCurrentPedVehicleOrHorse);
+		void RequestNetworkControlOfEntity(Entity entity);
 		void PrintSubtitle(std::string Text);
 		void TeleportToWaypoint();
 		void SpawnVehicle(const char* ModelHash);
 		void SpawnPed(const char* ModelHash, Ped PlayerPed);
-		void DeleteCurrentVehicleHorse();
+		void DeleteCurrentVehicle();
+		void DeleteCurrentMount();
 		void GetCameraDirection(float* dirX, float* dirY, float* dirZ);
 	}
 	namespace GameArrays 
@@ -210,13 +213,13 @@ namespace Cheat
 		extern bool downpress;
 		extern void ControlsLoop();
 		extern bool RestorePreviousSubmenu;
-		extern void Title(const char* title);
+		extern void Title(std::string title);
 		extern void End();
-		extern bool Option(const char* option, const char* InformationText);
-		extern bool MenuOption(const char* option, SubMenus menu);
-		extern bool BoolOption(const char* option, bool* isEnabled, const char* InformationText);
-		extern bool IntOption(const char* option, int* var, int min, int max, int step, const char* InformationText);
-		extern bool FloatOption(const char* option, float* var, float min, float max, float step, const char* InformationText);
+		extern bool Option(std::string option, std::string InformationText);
+		extern bool MenuOption(std::string option, SubMenus menu);
+		extern bool BoolOption(std::string option, bool* isEnabled, std::string InformationText);
+		extern bool IntOption(std::string option, int* var, int min, int max, int step, std::string InformationText);
+		extern bool FloatOption(std::string option, float* var, float min, float max, float step, std::string InformationText);
 		extern void drawText(std::string text, float font_size, float x, float y, rgba rgba, bool centered);
 		extern float guiX;
 	}

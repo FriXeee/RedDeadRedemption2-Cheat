@@ -19,7 +19,7 @@ void Cheat::CheatFunctions::LoopedFunctions()
 
 std::string Cheat::CheatFunctions::ReturnCheatBuildAsString()
 {
-	return "1.0.0.1";
+	return "1.0.0.2";
 }
 
 const std::string Cheat::CheatFunctions::ReturnCustomTeleportsIniFilePath()
